@@ -25,10 +25,9 @@ Proj4J can be found here: http://trac.osgeo.org/proj4j
 
 Some of the automatic tests return errors. 
 An error-free projection of coordinates cannot be guaranteed.
-
 You are invited to contribute this project and to implement the mentioned improvements.
 
-Other libraries
+## Other libraries
 
 Proj4Net is neither the only open source projection library for .Net available nor the one with the most active 
 community. You may want to take a look at
