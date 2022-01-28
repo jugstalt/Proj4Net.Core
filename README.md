@@ -1,4 +1,4 @@
-# proj4net
+# Proj4Net.Core
 
 This project is a port of Proj4.Net for .NET Standard for use in .NET Core applications. 
 origin: http://proj4net.codeplex.com/
