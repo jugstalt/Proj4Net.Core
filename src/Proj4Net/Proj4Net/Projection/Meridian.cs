@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using GeoAPI.Geometries;
+using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Utility;
 
 namespace Proj4Net.Projection

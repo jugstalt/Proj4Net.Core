@@ -15,7 +15,7 @@
      */
 
 using System;
-using GeoAPI.Geometries;
+using Proj4Net.GeoAPI.Geometries;
 
 namespace Proj4Net.Projection
 {

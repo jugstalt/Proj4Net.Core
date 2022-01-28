@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using GeoAPI.Geometries;
+using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Utility;
 
 namespace Proj4Net.Tests.IO

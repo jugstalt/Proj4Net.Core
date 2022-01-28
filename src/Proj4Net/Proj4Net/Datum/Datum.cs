@@ -16,7 +16,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Datum.Grids;
 using Proj4Net.Utility;
 

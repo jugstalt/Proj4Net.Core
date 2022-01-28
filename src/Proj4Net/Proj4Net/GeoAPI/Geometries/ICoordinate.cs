@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeoAPI.Geometries
+namespace Proj4Net.GeoAPI.Geometries
 {
 #if HAS_SYSTEM_ICLONEABLE
     using ICloneable = System.ICloneable;

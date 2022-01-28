@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace GeoAPI.Geometries
+namespace Proj4Net.GeoAPI.Geometries
 {
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]

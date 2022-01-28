@@ -1,4 +1,4 @@
-﻿namespace GeoAPI.Geometries
+﻿namespace Proj4Net.GeoAPI.Geometries
 {
     /// <summary>
     /// Standard ordinate index values.

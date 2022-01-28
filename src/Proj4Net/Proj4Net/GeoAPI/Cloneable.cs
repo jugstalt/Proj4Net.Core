@@ -1,5 +1,5 @@
 ﻿#if !HAS_SYSTEM_ICLONEABLE
-namespace GeoAPI
+namespace Proj4Net.GeoAPI
 {
     public interface ICloneable
     {

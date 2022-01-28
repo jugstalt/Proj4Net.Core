@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Utility;
 
 namespace Proj4Net.Datum.Grids
