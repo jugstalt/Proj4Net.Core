@@ -16,7 +16,9 @@ including datum transformation. The core of this library is a port of the Proj4J
 ## Home of Proj4J
 
 Proj4J can be found here: http://trac.osgeo.org/proj4j
+
 Description of projections and parameters: https://proj.org/index.html
+
 Online implementation: https://mygeodata.cloud/cs2cs/
 
 ## Still to do
