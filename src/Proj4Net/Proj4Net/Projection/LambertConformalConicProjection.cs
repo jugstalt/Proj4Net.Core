@@ -63,7 +63,7 @@ namespace Proj4Net.Projection
             {
                 rho = c * (Spherical ?
                     Math.Pow(Math.Tan(ProjectionMath.PiFourth + .5 * y), -n) :
-                      Math.Pow(ProjectionMath.tsfn(y, Math.Sin(y), Eccentricity), n));
+                    Math.Pow(ProjectionMath.tsfn(y, Math.Sin(y), Eccentricity), n));
             }
             coord.X = ScaleFactor * (rho * Math.Sin(x *= n));
             coord.Y = ScaleFactor * (rho0 - rho * Math.Cos(x));

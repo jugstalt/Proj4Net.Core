@@ -1,8 +1,6 @@
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using NUnit.Framework;
 
 namespace Proj4Net.Tests.IO
 {
@@ -26,7 +24,9 @@ namespace Proj4Net.Tests.IO
 
                 tests.AddRange(reader.ReadTests());
                 foreach (var test in tests)
+                {
                     passed += RunTest(test);
+                }
             }
             Assert.AreEqual(tests.Count, passed);
         }
@@ -36,7 +36,7 @@ namespace Proj4Net.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open("PROJ4_SPCS_ESRI_nad83.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_ESRI_nad83_.csv"*/"PROJ4_SPCS_ESRI_nad83_modified.csv"))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());
@@ -53,12 +53,14 @@ namespace Proj4Net.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open("PROJ4_SPCS_EPSG_nad83.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_EPSG_nad83.csv"*/"PROJ4_SPCS_EPSG_nad83_modified.csv"))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());
                 foreach (var test in tests)
+                {
                     passed += RunTest(test);
+                }
             }
             Assert.AreEqual(tests.Count, passed);
         }
@@ -68,12 +70,14 @@ namespace Proj4Net.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open("PROJ4_SPCS_nad27.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_nad27.csv"*/"PROJ4_SPCS_nad27_modified.csv"))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());
                 foreach (var test in tests)
+                {
                     passed += RunTest(test);
+                }
             }
             Assert.AreEqual(tests.Count, passed);
         }

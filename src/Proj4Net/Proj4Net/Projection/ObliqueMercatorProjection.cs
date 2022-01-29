@@ -29,7 +29,7 @@ namespace Proj4Net.Projection
 
         private const double Tolerance = 1.0e-7;
 
-        private double lamc, lam1, phi1, lam2, phi2, Gamma, al, bl, el, singam, cosgam, sinrot, cosrot, u_0;
+        private double lamc, lam1, phi1, lam2, phi2, al, bl, el, singam, cosgam, sinrot, cosrot, u_0;
         private Boolean ellips, rot;
 
         public ObliqueMercatorProjection()

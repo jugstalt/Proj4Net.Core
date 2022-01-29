@@ -54,7 +54,8 @@ namespace Proj4Net.Datum
             WGS84 = 1,
             ThreeParameters = 2,
             SevenParameters = 3,
-            GridShift = 4
+            GridShift = 4,
+            NoDatum = 5   // jugstalt
         }
 
         public static readonly Datum WGS84 = new Datum("WGS84", 0, 0, 0, Ellipsoid.WGS84, "WGS84");
@@ -62,8 +63,10 @@ namespace Proj4Net.Datum
         public static readonly Datum NAD83 = new Datum("NAD83", 0, 0, 0, Ellipsoid.GRS80, "North_American_Datum_1983");
         public static readonly Datum NAD27 = new Datum("NAD27", "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat", Ellipsoid.CLARKE_1866, "North_American_Datum_1927");
         public static readonly Datum Potsdam = new Datum("potsdam", 606.0, 23.0, 413.0, Ellipsoid.BESSEL, "Potsdam Rauenberg 1950 DHDN");
-        public static readonly Datum Carthage = new Datum("carthage", -263.0, 6.0, 431.0, Ellipsoid.CLARKE_1880, "Carthage 1934 Tunisia");
-        public static readonly Datum Hermannskogel = new Datum("hermannskogel", 653.0, -212.0, 449.0, Ellipsoid.BESSEL, "Hermannskogel");
+        public static readonly Datum Carthage = new Datum("carthage", -263.0, 6.0, 431.0, Ellipsoid.CLARKE_1880, "Carthage 1934 Tunisia"); 
+        //public static readonly Datum Hermannskogel = new Datum("hermannskogel", 653.0, -212.0, 449.0, Ellipsoid.BESSEL, "Hermannskogel");
+        // jugstalt
+        public static readonly Datum Hermannskogel = new Datum("hermannskogel", 577.326, 90.129, 463.919, 5.137, 1.474, 5.297, 2.4232, Ellipsoid.BESSEL, "Hermannskogel");
         public static readonly Datum IRE65 = new Datum("ire65", 482.530, -130.596, 564.557, -1.042, -0.214, -0.631, 8.15, Ellipsoid.MOD_AIRY, "Ireland 1965");
         public static readonly Datum OSGB36 = new Datum("OSGB36", 446.448, -125.157, 542.060, 0.1502, 0.2470, 0.8421, -20.4894, Ellipsoid.AIRY, "Airy 1830");
                                                           //+towgs84=446.448,-125.157, 542.06,  0.15,   0.247,  0.842,  -20.489 +units=m +no_defs
@@ -73,18 +76,27 @@ namespace Proj4Net.Datum
         private readonly Ellipsoid _ellipsoid;
         private readonly double[] _transform;
         private readonly string[] _grids;
-        
+
         public Datum(String code,
             String transformSpec,
             Ellipsoid ellipsoid,
             String name)
             : this(code, (double[])null, ellipsoid, name)
         {
-            transformSpec=transformSpec.Replace("@null", "");
-            if (string.IsNullOrEmpty(transformSpec))
-                return;
-            
-            _grids = transformSpec.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            if (transformSpec == "@null")   // jugstalt
+            {
+                _grids = null;
+                // this.TransformType = DatumTransformType.NoDatum;
+            }
+            else
+            {
+                //transformSpec = transformSpec.Replace("@null", "");
+
+                //if (string.IsNullOrEmpty(transformSpec))
+                //    return;
+
+                _grids = transformSpec.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            }
         }
 
         /// <summary>
@@ -187,8 +199,9 @@ namespace Proj4Net.Datum
                 if (_transform == null)
                 {
                     return _grids != null
-                        ? DatumTransformType.GridShift 
-                        : DatumTransformType.WGS84;
+                        ? DatumTransformType.GridShift
+                        : DatumTransformType.NoDatum;   // jugstalt
+                        //: DatumTransformType.WGS84;
                 }
 
                 if (IsIdentity(_transform)) return DatumTransformType.WGS84;

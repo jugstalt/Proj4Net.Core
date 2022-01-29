@@ -16,6 +16,8 @@ including datum transformation. The core of this library is a port of the Proj4J
 ## Home of Proj4J
 
 Proj4J can be found here: http://trac.osgeo.org/proj4j
+Description of projections and parameters: https://proj.org/index.html
+Online implementation: https://mygeodata.cloud/cs2cs/
 
 ## Still to do
 
@@ -23,9 +25,7 @@ Proj4J can be found here: http://trac.osgeo.org/proj4j
 * Port and expand Proj4J test suite
 * Check CoordianteReferenceSystem resource files (epsg/esri/nad/world) for actuality (with proj4)
 
-Some of the automatic tests return errors. 
-An error-free projection of coordinates cannot be guaranteed.
-You are invited to contribute this project and to implement the mentioned improvements.
+[Modification to the original project](./doc/modifications.md)
 
 ## Other libraries
 

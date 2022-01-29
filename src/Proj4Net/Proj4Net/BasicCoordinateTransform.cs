@@ -56,7 +56,7 @@ namespace Proj4Net
         ///<param name="sourceCRS">the source CRS to transform from</param>
         ///<param name="targetCRS">the target CRS to transform to</param>
         public BasicCoordinateTransform(CoordinateReferenceSystem sourceCRS,
-          CoordinateReferenceSystem targetCRS)
+                                        CoordinateReferenceSystem targetCRS)
         {
             if (sourceCRS == null)
                 throw new ArgumentNullException("sourceCRS");
@@ -87,8 +87,17 @@ namespace Proj4Net
             if (!_transformViaGeocentric) 
                 return;
 
-            _sourceGeoConv = new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
-            _targetGeoConv = new GeocentricConverter(targetCRS.Datum.Ellipsoid);
+            //_sourceGeoConv = new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
+            //_targetGeoConv = new GeocentricConverter(targetCRS.Datum.Ellipsoid);
+
+            // jugstalt
+            _sourceGeoConv = sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ?
+                new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid) :
+                new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
+
+            _targetGeoConv = targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ?
+                new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid) :
+                new GeocentricConverter(targetCRS.Datum.Ellipsoid);
         }
 
         public CoordinateReferenceSystem SourceCRS
@@ -184,10 +193,11 @@ namespace Proj4Net
                 /* -------------------------------------------------------------------- */
                 /*      Convert between datums.                                         */
                 /* -------------------------------------------------------------------- */
+                
                 if (_sourceCRS.Datum.HasTransformToWGS84)
                 {
                     _sourceCRS.Datum.TransformFromGeocentricToWgs84(pt);
-                }
+                } 
                 if (_targetCRS.Datum.HasTransformToWGS84)
                 {
                     _targetCRS.Datum.TransformToGeocentricFromWgs84(pt);
@@ -196,7 +206,15 @@ namespace Proj4Net
                 /* -------------------------------------------------------------------- */
                 /*      Convert back to geodetic coordinates.                           */
                 /* -------------------------------------------------------------------- */
-                _targetGeoConv.ConvertGeocentricToGeodetic(pt);
+                //if (_targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.WGS84)   // jugstalt
+                //{
+                //    new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid.A, Datum.Datum.WGS84.Ellipsoid.B)
+                //        .ConvertGeocentricToGeodetic(pt);
+                //}
+                //else
+                {
+                    _targetGeoConv.ConvertGeocentricToGeodetic(pt);
+                }
             }
 
             /* -------------------------------------------------------------------- */

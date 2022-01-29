@@ -20,16 +20,49 @@ namespace Proj4Net.Tests
         [Test]
         public void testFirst()
         {
-            CheckTransform("EPSG:4230", 5, 58, "EPSG:2192", 764566.84, 3343948.93, 0.01);
-            CheckTransform("EPSG:4258", 5.0, 70.0,    "EPSG:3035", 4041548.12525335, 4109791.65987687, 0.1 );
+            CheckTransform(
+                "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs", -98.77, 48.14,
+                "+proj=lcc +lat_1=48.73333333333333 +lat_2=47.43333333333333 +lat_0=47 +lon_0=-100.5 +x_0=599999.9999976 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=ft +no_defs", 2390856.77821, 420579.782933,
+                0.01);
+
+
+            //CheckTransform("EPSG:4230", 5, 58, "EPSG:2192", 764566.84, 3343948.93, 0.01);
+            CheckTransform("EPSG:4230", 5, 58, "EPSG:2192", 760722.919629, 3457368.68009, 0.01);  // https://mygeodata.cloud/cs2cs/
+
+            // austrian lambert
+            //CheckTransform(
+            //    "+proj=longlat +datum=WGS84 +no_defs ", 16, 47,
+            //    "+proj=lcc +lat_1=49 +lat_2=46 +lat_0=47.5 +lon_0=13.33333333333333 +x_0=400000 +y_0=400000 +datum=hermannskogel +units=m +no_defs  ", 602769.563747, 347959.093906,
+            //    0.01);
+
+            //CheckTransform(
+            //    "+proj=longlat +datum=WGS84 +no_defs ", 5, 58,
+            //    "+proj=lcc +lat_1=46.8 +lat_0=46.8 +datum=WGS84 +units=m +no_defs", 301672.654406, 1264351.25809,
+            //    0.01);
+
+            //CheckTransform("EPSG:4258", 5.0, 70.0,    "EPSG:3035", 4041548.12525335, 4109791.65987687, 0.1 );
+            CheckTransform("EPSG:4258", 5.0, 70.0, "EPSG:3035", 4127824.65822, 5214090.64906, 0.1);  // https://mygeodata.cloud/cs2cs/
 
             CheckTransform("EPSG:4326", 3.8142776, 51.285914, "EPSG:23031", 556878.9016076007, 5682145.166264554, 0.1);
 
             CheckTransformFromWGS84("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +towgs84=565.237,50.0087,465.658,-0.406857,0.350733,-1.87035,4.0812 +units=m +no_defs",
                 5.387638889, 52.156160556, 155029.78919920223, 463109.9541111593);
-            //CheckTransformToGeo("EPSG:28992", 148312.15, 457804.79, 5.29, 52.11, 0.01);
-            //checkTransformFromWGS84("EPSG:3785",     -76.640625, 49.921875,  -8531595.34908, 6432756.94421   );  
-            //CheckTransformFromGeo("EPSG:3785", -76.640625, 49.921875, -8531595.34908, 6432756.94421);
+
+            CheckTransformToGeo("EPSG:28992", 148312.15, 457804.79, 5.29, 52.11, 0.01);
+            CheckTransformFromWGS84("EPSG:3785", -76.640625, 49.921875, -8531595.34908, 6432756.94421);
+            CheckTransformFromGeo("EPSG:3785", -76.640625, 49.921875, -8531595.34908, 6432756.94421);
+        }
+
+        [Test]
+        public void TestNadGrids_atNULL()  // +nadgrids=@null
+        {
+            // 12.9664081925;48.1596984267
+            CheckTransform("EPSG:4326", 12.9664081925, 48.1596984267, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
+            //CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:4326", 12.9664081925, 48.1596984267, 0.01);
+            CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
+
+            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:4326", 12.9664081925, 48.1596984267, 0.01);
+            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:31255", -27239.046, 335772.696625, 0.01);
         }
 
         [Test]

@@ -93,20 +93,48 @@ namespace Proj4Net.Parser
             if (parameters.TryGetValue(Proj4Keyword.alpha, out s))
                 projection.AlphaDegrees = Double.Parse(s, CultureInfo.InvariantCulture);
 
+            if (parameters.TryGetValue(Proj4Keyword.gamma, out s))
+                projection.GammaDegrees = Double.Parse(s, CultureInfo.InvariantCulture);
+
             if (parameters.TryGetValue(Proj4Keyword.lonc, out s))
                 projection.LonCDegrees = Double.Parse(s, CultureInfo.InvariantCulture);
 
-            if (parameters.TryGetValue(Proj4Keyword.lat_0, out s))
-                projection.ProjectionLatitudeDegrees = ParseAngle(s);
 
             if (parameters.TryGetValue(Proj4Keyword.lon_0, out s))
                 projection.ProjectionLongitudeDegrees = ParseAngle(s);
 
+            bool lat_0_hasValue = false;
+            if (parameters.TryGetValue(Proj4Keyword.lat_0, out s))
+            {
+                projection.ProjectionLatitudeDegrees = ParseAngle(s);
+                lat_0_hasValue = true;
+            }
+
+            //if (parameters.TryGetValue(Proj4Keyword.lat_1, out s))
+            //    projection.ProjectionLatitude1Degrees = ParseAngle(s);
+
+            //if (parameters.TryGetValue(Proj4Keyword.lat_2, out s))
+            //    projection.ProjectionLatitude2Degrees = ParseAngle(s);
+
+            // jugstalt
             if (parameters.TryGetValue(Proj4Keyword.lat_1, out s))
+            {
                 projection.ProjectionLatitude1Degrees = ParseAngle(s);
 
-            if (parameters.TryGetValue(Proj4Keyword.lat_2, out s))
-                projection.ProjectionLatitude2Degrees = ParseAngle(s);
+                if (parameters.TryGetValue(Proj4Keyword.lat_2, out s))
+                {
+                    projection.ProjectionLatitude2Degrees = ParseAngle(s);
+                }
+                else if (projection.Name == "lcc")
+                {
+                    projection.ProjectionLatitude2Degrees = projection.ProjectionLatitude1Degrees;
+                }
+
+                if(!lat_0_hasValue && projection.Name=="lcc")
+                {
+                    projection.ProjectionLatitudeDegrees = projection.ProjectionLatitude1Degrees;
+                }
+            }
 
             if (parameters.TryGetValue(Proj4Keyword.lat_ts, out s))
                 projection.TrueScaleLatitudeDegrees = ParseAngle(s);
@@ -146,6 +174,8 @@ namespace Proj4Net.Parser
                     ? Meridian.CreateByDegree(pm) 
                     : Meridian.CreateByName(s);
             }
+
+            
 
             //TODO: implement some of these parameters ?
 

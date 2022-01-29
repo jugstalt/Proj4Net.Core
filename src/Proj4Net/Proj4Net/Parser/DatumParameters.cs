@@ -52,7 +52,10 @@ namespace Proj4Net.Parser
                     return Proj4Net.Datum.Datum.WGS84;
 
                 if (!string.IsNullOrEmpty(_nadGrids))
-                    return new Datum.Datum("User", _nadGrids, _ellipsoid, "User-defined");
+                {
+                    //return new Datum.Datum("User", _nadGrids, _ellipsoid, "User-defined");
+                    return new Datum.Datum("User", _nadGrids, Ellipsoid, "User-defined");  // jugstalt
+                }
 
                 // otherwise, return _a custom _datum with the specified _ellipsoid
                 return new Datum.Datum("User", _datumTransform, Ellipsoid, "User-defined");
@@ -150,7 +153,8 @@ namespace Proj4Net.Parser
 
         public void SetNadGrids(string grids)
         {
-            
+            // jugstalt
+            _nadGrids = grids;
         }
 
     }
