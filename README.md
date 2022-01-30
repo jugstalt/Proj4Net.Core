@@ -26,7 +26,8 @@ Online implementation: https://mygeodata.cloud/cs2cs/
 * Implement remaining Projections
 * Check CoordianteReferenceSystem resource files (epsg/esri/nad/world) for actuality (with proj4)
 
-I made some improvements, so all tests run successful 
+I made some improvements, now all tests run successful 
+
 [Modification to the original project](./doc/modifications.md)
 
 ## Usage of the library
