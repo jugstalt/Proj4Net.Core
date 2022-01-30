@@ -1,12 +1,12 @@
 # Proj4Net.Core
 
 This project is a port of Proj4.Net for .NET Standard for use in .NET Core applications. 
-origin: http://proj4net.codeplex.com/
+origin: http://proj4net.codeplex.com/ (not available anymore!)
 
 ## Project Description
 
 Proj4Net is a C#/.Net library to transform point coordinates from one geographic coordinate system to another, 
-including datum transformation. The core of this library is a port of the Proj4J library.
+including datum transformation. The core of this library is a port of the Proj4 library.
 
 ## Proj4Net targets
 

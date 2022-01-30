@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 using System;
-using Proj4Net.GeoAPI.Geometries;
 
 namespace Proj4Net.Projection
 {

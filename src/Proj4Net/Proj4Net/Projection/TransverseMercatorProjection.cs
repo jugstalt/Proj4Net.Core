@@ -18,7 +18,6 @@ limitations under the License.
  * This file was semi-automatically converted from the public-domain USGS PROJ source.
  */
 using System;
-using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Datum;
 using Proj4Net.Utility;
 

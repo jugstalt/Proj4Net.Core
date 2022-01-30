@@ -22,7 +22,7 @@ namespace Proj4Net.Tests
 				Assert.AreEqual((int)nm, m.Code);
 				Assert.AreEqual(nm, m.Name);
 				Assert.AreEqual(string.Format(" +pm={0}", nm.ToString().ToLower()), m.Proj4Description);
-				var c = new GeoAPI.Geometries.Coordinate(0, 0);
+				var c = new Coordinate(0, 0);
 				m.InverseAdjust(c);
 				Assert.AreEqual(m.Longitude, c.X, 1e-7);
 				m.Adjust(c);

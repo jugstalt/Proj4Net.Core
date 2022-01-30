@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 using System;
-using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Datum;
 using Proj4Net.Utility;
 

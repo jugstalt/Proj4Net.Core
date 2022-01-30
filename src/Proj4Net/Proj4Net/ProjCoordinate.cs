@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.Utility;
 
 namespace Proj4Net
@@ -246,7 +245,7 @@ namespace Proj4Net
                    CoordinateChecker.AreZOrdinatesEqual(this, other, 0);
         }
 
-        public new object Clone()
+        public object Clone()
         {
             return new ProjCoordinate(X, Y, Z);
         }

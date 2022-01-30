@@ -1,5 +1,4 @@
 using System;
-using Proj4Net.GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace Proj4Net.Tests
@@ -79,7 +78,7 @@ namespace Proj4Net.Tests
             Assert.IsTrue(IsInTolerance(p2, 33, 42, 0.000001));
         }
 
-        private static Boolean IsInTolerance(ICoordinate p, double x, double y, double tolerance)
+        private static Boolean IsInTolerance(Coordinate p, double x, double y, double tolerance)
         {
             /*
              * Compare result to expected, for test purposes

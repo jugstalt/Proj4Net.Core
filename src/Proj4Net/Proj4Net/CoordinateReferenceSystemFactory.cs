@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using Proj4Net.GeoAPI.Geometries;
 using Proj4Net.IO;
 using Proj4Net.Parser;
 

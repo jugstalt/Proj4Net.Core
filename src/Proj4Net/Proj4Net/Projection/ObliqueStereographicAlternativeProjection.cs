@@ -34,7 +34,7 @@ namespace Proj4Net.Projection
             Initialize();
         }
 
-        public /*override*/ GeoAPI.Geometries.Coordinate ProjectOld(double x, double y, GeoAPI.Geometries.Coordinate dst)
+        public /*override*/ Coordinate ProjectOld(double x, double y, Coordinate dst)
         {
             base.Project(x, y, dst );
             double px = dst.X;
@@ -48,7 +48,7 @@ namespace Proj4Net.Projection
             return dst;
         }
 
-        public override GeoAPI.Geometries.Coordinate Project(double lplamIn, double lpphiIn, GeoAPI.Geometries.Coordinate dst)
+        public override Coordinate Project(double lplamIn, double lpphiIn, Coordinate dst)
         {
             base.Project(lplamIn, lpphiIn, dst);
             double lplam = dst.X;
@@ -62,7 +62,7 @@ namespace Proj4Net.Projection
             return dst;
         }
 
-        public override GeoAPI.Geometries.Coordinate ProjectInverse(double x, double y, GeoAPI.Geometries.Coordinate dst)
+        public override Coordinate ProjectInverse(double x, double y, Coordinate dst)
         {
             double xyx = x/_scaleFactor;
             double xyy = y/_scaleFactor;
