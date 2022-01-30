@@ -697,7 +697,7 @@ namespace Proj4Net.Projection
         }
 
         ///<summary>
-        /// Get/Set the Alpha value (in Radinas)
+        /// Get/Set the Gamma value (in Radinas)
         ///</summary>
         public double Gamma
         {
@@ -706,7 +706,7 @@ namespace Proj4Net.Projection
         }
 
         ///<summary>
-        /// Get/Set the Alpha value in Degrees
+        /// Get/Set the Gamma value in Degrees
         ///</summary>
         public double GammaDegrees
         {

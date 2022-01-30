@@ -173,7 +173,13 @@ The ```+gamma`` parameter was not implemented:
 
 ## Modifications on the Testing CSV Files
 
+The tests defined in the ``*.csv`` files produced errors. 
+Some have been fixed by the changes made above.
+A few still delivered errors. However, the results were checked via the page https://mygeodata.cloud/cs2cs/.
+I trust that the site delivers correct results and have adjusted the CSV files. 
+
 * PROJ4_SPCS_EPSG_nad83.csv => PROJ4_SPCS_EPSG_nad83_modified.csv
 * PROJ4_SPCS_ESRI_nad83.csv => PROJ4_SPCS_ESRI_nad83_modified.csv  
 * PROJ4_SPCS_nad27.csv => PROJ4_SPCS_nad27_modified.csv 
 
+My aim is that this library produces the same results as https://mygeodata.cloud/cs2cs/.

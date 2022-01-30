@@ -26,6 +26,29 @@ Online implementation: https://mygeodata.cloud/cs2cs/
 
 [Modification to the original project](./doc/modifications.md)
 
+## Usage of the library
+
+The is an implementation for a simple console application ``cs2cs.core`` in the project solution.
+
+```csharp
+   
+   CoordinateReferenceSystemFactory crsFactory = new CoordinateReferenceSystemFactory();
+   CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
+
+   var sourceCRS = crsFactory.CreateFromParameters("Anon", "+proj=longlat +datum=WGS84 +no_defs");
+   var targetCRS = crsFactory.CreateFromName("EPSG:31256");
+
+   var transform = ctFactory.CreateTransform(sourceCRS, targetCRS);
+
+   var fromCoord = new ProjCoordinate(15, 47);
+   var toCoords = new ProjCoordinate();
+
+   transform.Transform(sourceCoord, targetCoords);
+
+   Console.WriteLine(targetCoords);  // => ProjCoordinate[-101323.59 207623.96 NaN]
+
+```
+
 ## Other libraries
 
 Proj4Net is neither the only open source projection library for .Net available nor the one with the most active 
