@@ -1,4 +1,4 @@
-﻿using Proj4Net;
+﻿using Proj4Net.Core;
 
 string from = String.Empty, to = String.Empty, coords = String.Empty;
 CoordinateReferenceSystemFactory crsFactory = new CoordinateReferenceSystemFactory();

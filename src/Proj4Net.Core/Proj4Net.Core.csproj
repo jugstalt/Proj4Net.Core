@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Release_Internal;Debug_Internal</Configurations>
+    <Version>0.9.1</Version>
+    <Authors>Jürgen Gstaltmaier</Authors>
+    <Copyright>2022, Jürgen Gstaltmaier</Copyright>
+    <RepositoryUrl>https://github.com/jugstalt/Proj4Net.Core</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\epsg" />
+    <None Remove="Resources\esri" />
+    <None Remove="Resources\nad27" />
+    <None Remove="Resources\nad83" />
+    <None Remove="Resources\world" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\epsg" />
+    <EmbeddedResource Include="Resources\esri" />
+    <EmbeddedResource Include="Resources\nad27" />
+    <EmbeddedResource Include="Resources\nad83" />
+    <EmbeddedResource Include="Resources\world" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Proj4Net\Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

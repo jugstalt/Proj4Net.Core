@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Proj4Net\Proj4Net.csproj" />
+    <ProjectReference Include="..\Proj4Net.Core\Proj4Net.Core.csproj" />
   </ItemGroup>
 
 </Project>

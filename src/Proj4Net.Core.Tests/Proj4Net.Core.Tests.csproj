@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{BF51F808-13A3-44E6-8F74-20686AFAEA76}</ProjectGuid>
+    <TargetFramework>netcoreapp21</TargetFramework>
+    <Copyright>Copyright ©  2018</Copyright>
+    <NoWarn>1591</NoWarn>
+    <Platforms>x64</Platforms>
+    <LangVersion>latest</LangVersion>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\PROJ4_SPCS_EPSG_nad83.csv" />
+    <None Remove="Resources\PROJ4_SPCS_EPSG_nad83_modified.csv" />
+    <None Remove="Resources\PROJ4_SPCS_ESRI_nad83.csv" />
+    <None Remove="Resources\PROJ4_SPCS_ESRI_nad83_modified.csv" />
+    <None Remove="Resources\PROJ4_SPCS_nad27.csv" />
+    <None Remove="Resources\PROJ4_SPCS_nad27_modified.csv" />
+    <None Remove="Resources\TestData.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_EPSG_nad83_modified.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_EPSG_nad83.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_ESRI_nad83_modified.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_ESRI_nad83.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_nad27_modified.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_nad27.csv" />
+    <EmbeddedResource Include="Resources\TestData.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Proj4Net.Core\Proj4Net.Core.csproj" />
+  </ItemGroup>
+</Project>
