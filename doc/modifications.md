@@ -162,7 +162,7 @@ The ``+gamma`` parameter was not implemented:
             get { return _gamma; }
             set { _gamma = value; }
         }
->
+
         public double GammaDegrees
         {
             get { return _gamma * RTD; }
