@@ -27,7 +27,7 @@ namespace Proj4Net.Projection
     public class BipolarProjection : Projection
     {
 
-        private Boolean noskew;
+        private Boolean noskew = false;
 
         private const double EPS = 1e-10;
         //private const double EPS10 = 1e-10;

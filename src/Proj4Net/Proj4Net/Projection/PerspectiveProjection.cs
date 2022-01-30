@@ -26,17 +26,17 @@ namespace Proj4Net.Projection
             NorthPole, SouthPole, Equit, Oblique
         }
         private double height;
-        private double psinph0;
-        private double pcosph0;
+        private double psinph0 = 0D;
+        private double pcosph0 = 0D;
         private double p;
         private double rp;
         private double pn1;
         private double pfact;
         private double h;
-        private double cg;
-        private double sg;
-        private double sw;
-        private double cw;
+        private double cg = 0D;
+        private double sg = 0D;
+        private double sw = 0D;
+        private double cw = 0D;
         private Modes mode;
         private int tilt;
 

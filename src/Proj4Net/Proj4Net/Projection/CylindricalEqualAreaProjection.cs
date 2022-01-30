@@ -25,7 +25,7 @@ namespace Proj4Net.Projection
 
         private double _qp;
         private double[] _apa;
-        private double trueScaleLatitude;
+        //private double trueScaleLatitude;
 
         public CylindricalEqualAreaProjection()
             : this(0.0, 0.0, 0.0)

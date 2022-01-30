@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Cs2Cs.Core": {
+      "commandName": "Project",
+      "commandLineArgs": "--from EPSG:4326 --to EPSG:31256"
+    }
+  }
+}

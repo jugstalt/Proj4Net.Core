@@ -22,7 +22,7 @@ namespace Proj4Net.Projection
 
     public class FoucautSinusoidalProjection : Projection
     {
-        private double n, n1;
+        private double n = 0, n1;
 
         private const int MaxIter = 10;
         private const double LoopTolerance = 1e-7;

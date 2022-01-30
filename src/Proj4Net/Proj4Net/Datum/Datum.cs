@@ -78,23 +78,17 @@ namespace Proj4Net.Datum
         private readonly string[] _grids;
 
         public Datum(String code,
-            String transformSpec,
-            Ellipsoid ellipsoid,
-            String name)
-            : this(code, (double[])null, ellipsoid, name)
+                     String transformSpec,
+                     Ellipsoid ellipsoid,
+                     String name)
+                     : this(code, (double[])null, ellipsoid, name)
         {
             if (transformSpec == "@null")   // jugstalt
             {
                 _grids = null;
-                // this.TransformType = DatumTransformType.NoDatum;
             }
             else
             {
-                //transformSpec = transformSpec.Replace("@null", "");
-
-                //if (string.IsNullOrEmpty(transformSpec))
-                //    return;
-
                 _grids = transformSpec.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
         }

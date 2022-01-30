@@ -26,7 +26,7 @@ namespace Proj4Net.Projection
         private const double Tolerance = 1.0e-8;
 
         private double[] _en;
-        private double _m1;
+        //private double _m1;
         private double _n1;
         private double _mp;
         private double _he;
@@ -235,7 +235,6 @@ namespace Proj4Net.Projection
             else
             {
                 double c, Az, cosAz, A, B, D, E, F, psi, t;
-                int i;
 
                 if ((c = ProjectionMath.Distance(x, y)) < EPS10)
                 {

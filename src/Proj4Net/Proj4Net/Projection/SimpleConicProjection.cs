@@ -130,10 +130,10 @@ namespace Proj4Net.Projection
         public override void Initialize()
         {
             base.Initialize();
-            double cs, dummy;
+            double cs;
 
             /* get common factors for simple conics */
-            double p1, p2, d, s;
+            double p1, p2;
             int err = 0;
 
             /*FIXME
@@ -154,7 +154,7 @@ namespace Proj4Net.Projection
             var del = 0.5 * (p2 - p1);
             _sig = 0.5 * (p2 + p1);
             err = (Math.Abs(del) < EPS10 || Math.Abs(_sig) < EPS10) ? -42 : 0;
-            del = del;
+            //del = del;
 
             if (err != 0)
                 throw new ProjectionException("Error " + err);

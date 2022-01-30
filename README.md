@@ -13,9 +13,7 @@ including datum transformation. The core of this library is a port of the Proj4J
 * .NET Core
 * .NET Framework 4.x
 
-## Home of Proj4J
-
-Proj4J can be found here: http://trac.osgeo.org/proj4j
+## Home of Proj4
 
 Description of projections and parameters: https://proj.org/index.html
 
@@ -24,7 +22,6 @@ Online implementation: https://mygeodata.cloud/cs2cs/
 ## Still to do
 
 * Implement remaining Projections
-* Port and expand Proj4J test suite
 * Check CoordianteReferenceSystem resource files (epsg/esri/nad/world) for actuality (with proj4)
 
 [Modification to the original project](./doc/modifications.md)

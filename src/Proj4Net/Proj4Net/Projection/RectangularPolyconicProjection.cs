@@ -22,11 +22,11 @@ namespace Proj4Net.Projection
     public class RectangularPolyconicProjection : Projection
     {
 
-        private double phi0;
-        private double phi1;
-        private double fxa;
-        private double fxb;
-        private Boolean mode;
+        private double phi0 = 0D;
+        //private double phi1 = 0D;
+        private double fxa = 0D;
+        private double fxb = 0D;
+        private Boolean mode = false;
 
         private const double EPS = 1e-9;
 

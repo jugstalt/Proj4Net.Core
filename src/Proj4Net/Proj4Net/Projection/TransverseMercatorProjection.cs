@@ -101,7 +101,7 @@ namespace Proj4Net.Projection
 
         public int GetRowFromNearestParallel(double latitude)
         {
-            int degrees = (int)ProjectionMath.RadiansToDegreesFn(ProjectionMath.NormalizeLatitude(latitude));
+            int degrees = (int)ProjectionMath.ToDegrees(ProjectionMath.NormalizeLatitude(latitude));
             if (degrees < -80 || degrees > 84)
                 return 0;
             if (degrees > 80)
