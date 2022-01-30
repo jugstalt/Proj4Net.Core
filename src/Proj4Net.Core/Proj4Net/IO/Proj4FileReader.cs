@@ -13,7 +13,7 @@ namespace Proj4Net.Core.IO
         
         private static MemoryStream GetResource(string name)
         {
-            var mrs = "Proj4Net.Resources." + name;
+            var mrs = "Proj4Net.Core.Resources." + name;
             var s = _asm.GetManifestResourceStream(mrs);
             if (s == null)
                 return new MemoryStream();

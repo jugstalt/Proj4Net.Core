@@ -6,14 +6,16 @@ origin: http://proj4net.codeplex.com/ (not available anymore!)
 ## Project Description
 
 Proj4Net is a C#/.Net library to transform point coordinates from one geographic coordinate system to another, 
-including datum transformation. The core of this library is a port of the Proj4 library.
+including datum transformation. The core of this library is a port of the Proj4J library.
 
 ## Proj4Net targets
 
 * .NET Core
 * .NET Framework 4.x
 
-## Home of Proj4
+## Home of Proj4J/Proj4
+
+Proj4J: https://trac.osgeo.org/proj4j/
 
 Description of projections and parameters: https://proj.org/index.html
 
@@ -28,7 +30,13 @@ Online implementation: https://mygeodata.cloud/cs2cs/
 
 ## Usage of the library
 
-The is an implementation for a simple console application ``cs2cs.core`` in the project solution.
+Install nuget package: https://www.nuget.org/packages/Proj4Net.Core/
+
+```
+Install-Package Proj4Net.Core 
+```
+
+There is an implementation for a simple console application ``cs2cs.core`` in the project solution.
 
 ```csharp
    

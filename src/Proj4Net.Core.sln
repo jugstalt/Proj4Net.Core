@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cs2Cs.Core", "Cs2Cs.Core\Cs
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug_Internal|Any CPU = Debug_Internal|Any CPU
 		Debug|Any CPU = Debug|Any CPU
-		Release_Internal|Any CPU = Release_Internal|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution

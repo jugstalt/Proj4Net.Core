@@ -9,6 +9,7 @@
     <RepositoryUrl>https://github.com/jugstalt/Proj4Net.Core</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Description>.NET Standard port of Proj4Net</Description>
   </PropertyGroup>
 
   <ItemGroup>
