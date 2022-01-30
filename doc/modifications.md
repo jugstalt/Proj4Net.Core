@@ -3,7 +3,7 @@
 I made some modifications to the original project to ensure all the test run successful.
 Here is a list of my edits:
 
-## -nadgrids=@null
+## +nadgrids=@null
 
 The WebMercator projection contains the parameter ``+nadgrids=@null``. This suppresses a datum shift:
 
@@ -98,7 +98,7 @@ In the Test project is a method to check WebMercator projections: ``Proj4Net.Tes
 
 ...
 
-## lat_0, lat_1, lat_2 for lcc (Lambert Conformal Conic)
+## +lat_0, +lat_1, +lat_2 for lcc (Lambert Conformal Conic) projection
 
 The **ED50 / France EuroLambert (EPSG:2192)** for example has the following definition:
 
