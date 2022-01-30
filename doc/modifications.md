@@ -100,11 +100,76 @@ In the Test project is a method to check WebMercator projections: ``Proj4Net.Tes
 
 ## lat_0, lat_1, lat_2 for lcc (Lambert Conformal Conic)
 
-...
+The **ED50 / France EuroLambert (EPSG:2192)** for example has the following definition:
+
+``+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=2.337229166666667 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs`` 
+
+Here, the parameters ``lat_1`` and ``lat_0`` are defined but not ``lat_2``. This caused an error because a default value 
+for ``lat_2`` is used during the projection. To correct that error, ``lat_2`` must set to the same value as ``lat_1``.
+
+```csharp
+            // Proj4Parser.cs
+
+            // old 
+            //if (parameters.TryGetValue(Proj4Keyword.lat_1, out s))
+            //    projection.ProjectionLat.itude1Degrees = ParseAngle(s);
+
+            //if (parameters.TryGetValue(Proj4Keyword.lat_2, out s))
+            //    projection.ProjectionLatitude2Degrees = ParseAngle(s);
+
+            // jugstalt
+            bool lat_0_hasValue = false;
+            if (parameters.TryGetValue(Proj4Keyword.lat_0, out s))
+            {
+                projection.ProjectionLatitudeDegrees = ParseAngle(s);
+                lat_0_hasValue = true;
+            }
+
+            if (parameters.TryGetValue(Proj4Keyword.lat_1, out s))
+            {
+                projection.ProjectionLatitude1Degrees = ParseAngle(s);
+
+                if (parameters.TryGetValue(Proj4Keyword.lat_2, out s))
+                {
+                    projection.ProjectionLatitude2Degrees = ParseAngle(s);
+                }
+                else if (projection.Name == "lcc")
+                {
+                    projection.ProjectionLatitude2Degrees = projection.ProjectionLatitude1Degrees;
+                }
+
+                if(!lat_0_hasValue && projection.Name=="lcc")
+                {
+                    projection.ProjectionLatitudeDegrees = projection.ProjectionLatitude1Degrees;
+                }
+            }
+
+```
 
 ## gamma-Parameter
 
-...
+The ```+gamma`` parameter was not implemented:
+
+```csharp
+        // Proj4Parser.cs
+
+        if (parameters.TryGetValue(Proj4Keyword.gamma, out s))
+            projection.GammaDegrees = Double.Parse(s, CultureInfo.InvariantCulture);
+
+        // Projections.cs
+        public double Gamma
+        {
+            get { return _gamma; }
+            set { _gamma = value; }
+        }
+>
+        public double GammaDegrees
+        {
+            get { return _gamma * RTD; }
+            set { _gamma = DTR * value; }
+        }    
+
+```
 
 ## Modifications on the Testing CSV Files
 
