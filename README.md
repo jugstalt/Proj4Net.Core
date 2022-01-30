@@ -40,12 +40,12 @@ The is an implementation for a simple console application ``cs2cs.core`` in the 
 
    var transform = ctFactory.CreateTransform(sourceCRS, targetCRS);
 
-   var fromCoord = new ProjCoordinate(15, 47);
-   var toCoords = new ProjCoordinate();
+   var sourceCoord = new ProjCoordinate(15, 47);
+   var targetCoord = new ProjCoordinate();
 
-   transform.Transform(sourceCoord, targetCoords);
+   transform.Transform(sourceCoord, targetCoord);
 
-   Console.WriteLine(targetCoords);  // => ProjCoordinate[-101323.59 207623.96 NaN]
+   Console.WriteLine(targetCoord);  // => ProjCoordinate[-101323.59 207623.96 NaN]
 
 ```
 

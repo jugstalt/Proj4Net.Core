@@ -33,10 +33,10 @@ if (String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to))
     return;
 }
 
-var fromCRS = CreateCRS(from);  // "EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs"
-var toCRS = CreateCRS(to);
+var sourceCRS = CreateCRS(from);  // "EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs"
+var targetCRS = CreateCRS(to);
 
-var trans = ctFactory.CreateTransform(fromCRS, toCRS);
+var transform = ctFactory.CreateTransform(sourceCRS, targetCRS);
 var interactive = String.IsNullOrEmpty(coords);
 
 if(interactive)
@@ -64,12 +64,12 @@ while (true)
     {
         var coordinate = ParseCoodinateString(coords);
 
-        var fromCoord = new ProjCoordinate(coordinate.x, coordinate.y);
-        var toCoords = new ProjCoordinate();
+        var sourceCoord = new ProjCoordinate(coordinate.x, coordinate.y);
+        var targetCoords = new ProjCoordinate();
 
-        trans.Transform(fromCoord, toCoords);
+        transform.Transform(sourceCoord, targetCoords);
 
-        Console.WriteLine(toCoords);
+        Console.WriteLine(targetCoords);
     }
     catch
     {
