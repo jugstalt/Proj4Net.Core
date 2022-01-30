@@ -5,7 +5,7 @@ origin: http://proj4net.codeplex.com/ (not available anymore!)
 
 ## Project Description
 
-Proj4Net is a C#/.Net library to transform point coordinates from one geographic coordinate system to another, 
+Proj4Net.Core is a C#/.Net library to transform point coordinates from one geographic coordinate system to another, 
 including datum transformation. The core of this library is a port of the Proj4J library.
 
 ## Proj4Net targets
@@ -26,6 +26,7 @@ Online implementation: https://mygeodata.cloud/cs2cs/
 * Implement remaining Projections
 * Check CoordianteReferenceSystem resource files (epsg/esri/nad/world) for actuality (with proj4)
 
+I made some improvements, so all tests run successful 
 [Modification to the original project](./doc/modifications.md)
 
 ## Usage of the library
