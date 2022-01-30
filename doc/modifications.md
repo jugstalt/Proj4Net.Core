@@ -148,7 +148,7 @@ for ``lat_2`` is used during the projection. To correct that error, ``lat_2`` mu
 
 ## gamma-Parameter
 
-The ```+gamma`` parameter was not implemented:
+The ``+gamma`` parameter was not implemented:
 
 ```csharp
         // Proj4Parser.cs
