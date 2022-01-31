@@ -3,6 +3,13 @@
 I made some modifications to the original project to ensure all the test run successful.
 Here is a list of my edits:
 
+## Removed Dependencies
+
+I removed the dependencies to **GeoAPI**. In the original project only uses ``Coordinates`` class 
+from the **GeoAPI** package.
+A ``Coordinates`` class with the ``X``, ``Z``, ``Z`` properties is now included directly in
+this project. So, there are no dependencies to other projects. 
+
 ## +nadgrids=@null
 
 The WebMercator projection contains the parameter ``+nadgrids=@null``. This suppresses a datum shift:
