@@ -29,6 +29,7 @@ namespace Proj4Net.Core.IO
             // TODO: use simpler parser than StreamTokenizer for speed and flexibility
             // TODO: parse CSes line-at-a-time (this allows preserving CS param string for later access)
 
+
             using (var stream = GetResource(file.ToLower()))
             /*
             switch (file.ToLower())
