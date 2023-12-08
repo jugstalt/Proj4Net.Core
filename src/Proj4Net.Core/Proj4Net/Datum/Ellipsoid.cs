@@ -207,6 +207,8 @@ namespace Proj4Net.Core.Datum
 
         public static readonly Ellipsoid SPHERE = new Ellipsoid("sphere", 6371008.7714,
                                                                 6371008.7714, 0.0, "Sphere");
+        
+        public static readonly Ellipsoid GSK2011 = new Ellipsoid("GSK2011", 6378136.5, 0.0, 298.2564151, "GSK-2011");
 
         // ReSharper restore InconsistentNaming
 
@@ -250,7 +252,8 @@ namespace Proj4Net.Core.Datum
                 SEASIA,
                 WALBECK,
                 NAD27, NAD83,
-                SPHERE
+                SPHERE,
+                GSK2011
             };
 
 
