@@ -252,7 +252,8 @@ namespace Proj4Net.Core.Datum
                 SEASIA,
                 WALBECK,
                 NAD27, NAD83,
-                SPHERE
+                SPHERE,
+                GSK2011
             };
 
 
