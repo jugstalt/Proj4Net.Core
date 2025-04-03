@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 
 namespace Proj4Net.Core.Datum.Grids
@@ -55,7 +55,7 @@ namespace Proj4Net.Core.Datum.Grids
         protected double GetBigEndianDouble(byte[] buffer, int offset)
         {
             var bytes = new byte[8];
-            Buffer.BlockCopy(bytes, offset, bytes, 0, 8);
+            Buffer.BlockCopy(buffer, offset, bytes, 0, 8);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
             return BitConverter.ToDouble(bytes, 0);

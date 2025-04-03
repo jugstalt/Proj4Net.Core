@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright 2006 Jerry Huxtable
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -356,7 +356,7 @@ namespace Proj4Net.Core.Datum
             {
                 var gridOptional = grid.StartsWith("@");
                 var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
-                var uri = new Uri(System.IO.Path.Combine(".", gridName));
+                var uri = new Uri(System.IO.Path.Combine(IO.Paths.GridRootPath, gridName));
                 var table = GridTable.Load(uri);
                 if (table == null)
                 {    
