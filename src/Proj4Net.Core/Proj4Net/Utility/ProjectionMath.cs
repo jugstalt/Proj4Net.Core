@@ -51,6 +51,9 @@ namespace Proj4Net.Core.Utility
         /// <returns>returns</returns>
         public static double ToRadians(double degrees) { return degrees * DegreesToRadians; }
 
+        static public double SecondsToDegrees(double seconds) => seconds / 3600.0;
+        
+
         ///<summary>Degree versions of trigonometric function: Math.Sin</summary>
         public static double Sind(double v)
         {

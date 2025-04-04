@@ -7,7 +7,7 @@ namespace Proj4Net.Core.Datum.Grids
     {
         private readonly long _dataOffset;
 
-        internal GsbGridTableLoader(Uri location) 
+        internal GsbGridTableLoader(Uri location)
             : base(location)
         {
         }
@@ -26,15 +26,15 @@ namespace Proj4Net.Core.Datum.Grids
         internal override bool ReadHeader(GridTable table)
         {
             var headerBuffer = new byte[176];
-            using(var s = OpenGridTableStream())
+            using (var s = OpenGridTableStream())
             {
                 s.Seek(_dataOffset, SeekOrigin.Current);
                 if (s.Read(headerBuffer, 0, 176) != 176)
                     return false;
             }
 
-            return _dataOffset == 0 
-                       ? ReadOverviewHeader(headerBuffer, table) 
+            return _dataOffset == 0
+                       ? ReadOverviewHeader(headerBuffer, table)
                        : ReadHeader(headerBuffer, table);
         }
 
@@ -42,11 +42,11 @@ namespace Proj4Net.Core.Datum.Grids
         private bool ReadOverviewHeader(byte[] headerBuffer, GridTable table)
         {
             var numGrids = GetInt32(headerBuffer, 40);
-            long offset = 176;
+            long offset = 176; //176;
             for (var i = 0; i < numGrids; i++)
             {
                 var sub = new GridTable(new GsbGridTableLoader(_uri, offset));
-                offset += 176 + 2*sub.NumPhis*sub.NumLambdas*sizeof (double);
+                offset += 176 + 2 * sub.NumPhis * sub.NumLambdas * sizeof(double);
                 table.AddSubGrid(sub);
             }
             return true;
@@ -54,23 +54,23 @@ namespace Proj4Net.Core.Datum.Grids
 
         private bool ReadHeader(byte[] headerBuffer, GridTable table)
         {
-            var ll = new PhiLambda
-                {
-                    Phi = GetBigEndianDouble(headerBuffer, 4 * 16 + 8),
-                    Lambda = -GetBigEndianDouble(headerBuffer, 7 * 16 + 8)
-                };
+            var ll = PhiLambda.SecondsToDegrees(new PhiLambda
+            {
+                Phi = GetBigEndianDouble(headerBuffer, 4 * 16 + 8),
+                Lambda = -GetBigEndianDouble(headerBuffer, 7 * 16 + 8)
+            });
 
-            var ur = new PhiLambda
-                {
-                    Phi = GetBigEndianDouble(headerBuffer, 5 * 16 + 8),
-                    Lambda = -GetBigEndianDouble(headerBuffer, 6 * 16 + 8)
-                };
+            var ur = PhiLambda.SecondsToDegrees(new PhiLambda
+            {
+                Phi = GetBigEndianDouble(headerBuffer, 5 * 16 + 8),
+                Lambda = -GetBigEndianDouble(headerBuffer, 6 * 16 + 8)
+            });
 
-            var cs = new PhiLambda
-                {
-                    Phi = GetBigEndianDouble(headerBuffer, 8 * 16 + 8),
-                    Lambda = -GetBigEndianDouble(headerBuffer, 9 * 16 + 8)
-                };
+            var cs = PhiLambda.SecondsToDegrees(new PhiLambda
+            {
+                Phi = GetBigEndianDouble(headerBuffer, 8 * 16 + 8),
+                Lambda = GetBigEndianDouble(headerBuffer, 9 * 16 + 8)
+            });
 
             table.NumLambdas = (int)(Math.Abs(ur.Lambda - ll.Lambda) / cs.Lambda + .5) + 1;
             table.NumPhis = (int)(Math.Abs(ur.Phi - ll.Phi) / cs.Phi + .5) + 1;
@@ -113,11 +113,17 @@ namespace Proj4Net.Core.Datum.Grids
                         for (var col = numLambdas - 1; col >= 0; col--)
                         {
                             // shift values are given in "arc-seconds" and need to be converted to radians.
+                            var phi = br.ReadSingle();
+                            var lambda = br.ReadSingle();
+                            br.ReadSingle(); // lat accuracy
+                            br.ReadSingle(); // lon accuracy
+
                             coeffs[row][col] =
-                                PhiLambda.ArcSecondsToRadians(
-                                    ReadBigEndianDouble(br), ReadBigEndianDouble(br));
+                                PhiLambda.ArcSecondsToRadians(phi, lambda);
                         }
                     }
+
+                    table.Coefficients = coeffs;
                 }
             }
             return true;

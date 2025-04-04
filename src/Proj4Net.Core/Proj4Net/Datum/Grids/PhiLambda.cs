@@ -25,6 +25,15 @@ namespace Proj4Net.Core.Datum.Grids
                     Phi = ProjectionMath.ToRadians(plInDegrees.Phi)
                 };
         }
+        public static PhiLambda SecondsToDegrees(PhiLambda plInDegrees)
+        {
+            return new PhiLambda
+            {
+                Lambda = ProjectionMath.SecondsToDegrees(plInDegrees.Lambda),
+                Phi = ProjectionMath.SecondsToDegrees(plInDegrees.Phi)
+            };
+        }
+
         public static PhiLambda ArcSecondsToRadians(PhiLambda plInDegrees)
         {
             return new PhiLambda

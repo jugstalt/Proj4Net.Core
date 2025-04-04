@@ -356,7 +356,7 @@ namespace Proj4Net.Core.Datum
             {
                 var gridOptional = grid.StartsWith("@");
                 var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
-                var uri = new Uri(System.IO.Path.Combine(IO.Paths.GridRootPath, gridName));
+                var uri = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
                 var table = GridTable.Load(uri);
                 if (table == null)
                 {    
@@ -366,7 +366,8 @@ namespace Proj4Net.Core.Datum
                 }
 
                 GridTable useTable;
-                if(table.Applies(new PhiLambda { Lambda = c.Y, Phi = c.X}, out useTable))
+                var c1 = new PhiLambda { Lambda = c.X, Phi = c.Y  };
+                if (table.Applies(c1, out useTable))
                 {
                     useTable.Apply(c, inverse);
                 }

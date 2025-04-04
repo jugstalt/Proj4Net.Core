@@ -47,7 +47,7 @@ namespace Proj4Net.Core.Datum.Grids
         protected double ReadBigEndianDouble(BinaryReader reader)
         {
             var bytes = reader.ReadBytes(8);
-            if (BitConverter.IsLittleEndian)
+            if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
             return BitConverter.ToDouble(bytes, 0);
         }
@@ -56,7 +56,7 @@ namespace Proj4Net.Core.Datum.Grids
         {
             var bytes = new byte[8];
             Buffer.BlockCopy(buffer, offset, bytes, 0, 8);
-            if (BitConverter.IsLittleEndian)
+            if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
             return BitConverter.ToDouble(bytes, 0);
         }
