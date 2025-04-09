@@ -53,38 +53,48 @@ trans.Transform(p2, p0);
 
 Console.WriteLine($"Transformed coordinates: {Math.Round(p0.X, 8)}, {Math.Round(p0.Y, 8)}");
 
-string filePath = @"G:\github\jugstalt\Proj4Net.Core\src\Proj4Net.Playground\bin\Debug\net6.0\share\proj\AT_GIS_GRID_2021_09_28.gsb";
-var ntv2 = Ntv2Reader.ReadFile(filePath);
+string path = @"G:\github\jugstalt\Proj4Net.Core\src\Proj4Net.Playground\bin\Debug\net6.0\share\proj";
 
-Console.WriteLine("== Global Header ==");
-Console.WriteLine($"  NumORec  = {ntv2.GlobalHeader.NUM_OREC}");
-Console.WriteLine($"  NumSRec  = {ntv2.GlobalHeader.NUM_SREC}");
-Console.WriteLine($"  NumFile  = {ntv2.GlobalHeader.NUM_FILE}");
-Console.WriteLine($"  GsType   = {ntv2.GlobalHeader.GS_TYPE}");
-Console.WriteLine($"  Version  = {ntv2.GlobalHeader.VERSION}");
-Console.WriteLine($"  SystemF  = {ntv2.GlobalHeader.SYSTEM_F}");
-Console.WriteLine($"  SystemT  = {ntv2.GlobalHeader.SYSTEM_T}");
-Console.WriteLine($"  MajorF   = {ntv2.GlobalHeader.MAJOR_F}");
-Console.WriteLine($"  MinorF   = {ntv2.GlobalHeader.MINOR_F}");
-Console.WriteLine($"  MajorT   = {ntv2.GlobalHeader.MAJOR_F}");
-Console.WriteLine($"  MinorT   = {ntv2.GlobalHeader.MINOR_T}");
-
-for (int i = 0; i < ntv2.SubGrids.Count; i++)
+foreach (var fileInfo in new DirectoryInfo(path).GetFiles("*.gsb"))
 {
-    var sg = ntv2.SubGrids[i];
-    Console.WriteLine($"\n== Sub-Grid #{i + 1} ==");
-    Console.WriteLine($"  Name     = {sg.Header.SUB_NAME}");
-    Console.WriteLine($"  Parent   = {sg.Header.PARENT}");
-    Console.WriteLine($"  Created  = {sg.Header.CREATED}");
-    Console.WriteLine($"  Updated  = {sg.Header.UPDATED}");
-    Console.WriteLine($"  SouthLat = {sg.Header.S_LAT}");
-    Console.WriteLine($"  NorthLat = {sg.Header.N_LAT}");
-    Console.WriteLine($"  EastLong = {sg.Header.E_LONG}");
-    Console.WriteLine($"  WestLong = {sg.Header.W_LONG}");
-    Console.WriteLine($"  LatInc   = {sg.Header.LAT_INC}");
-    Console.WriteLine($"  LongInc  = {sg.Header.LONG_INC}");
-    Console.WriteLine($"  GsCount  = {sg.Header.GS_COUNT}");
-    Console.WriteLine($"  -> #Points read: {sg.Points.Count}");
+    Console.WriteLine(fileInfo.FullName);
+
+
+    //string filePath = @"G:\github\jugstalt\Proj4Net.Core\src\Proj4Net.Playground\bin\Debug\net6.0\share\proj\AT_GIS_GRID_2021_09_28.gsb";
+    string filePath = fileInfo.FullName;    
+
+    var ntv2 = Ntv2Reader.ReadFile(filePath);
+
+    Console.WriteLine("== Global Header ==");
+    Console.WriteLine($"  NumORec  = {ntv2.GlobalHeader.NUM_OREC}");
+    Console.WriteLine($"  NumSRec  = {ntv2.GlobalHeader.NUM_SREC}");
+    Console.WriteLine($"  NumFile  = {ntv2.GlobalHeader.NUM_FILE}");
+    Console.WriteLine($"  GsType   = {ntv2.GlobalHeader.GS_TYPE}");
+    Console.WriteLine($"  Version  = {ntv2.GlobalHeader.VERSION}");
+    Console.WriteLine($"  SystemF  = {ntv2.GlobalHeader.SYSTEM_F}");
+    Console.WriteLine($"  SystemT  = {ntv2.GlobalHeader.SYSTEM_T}");
+    Console.WriteLine($"  MajorF   = {ntv2.GlobalHeader.MAJOR_F}");
+    Console.WriteLine($"  MinorF   = {ntv2.GlobalHeader.MINOR_F}");
+    Console.WriteLine($"  MajorT   = {ntv2.GlobalHeader.MAJOR_F}");
+    Console.WriteLine($"  MinorT   = {ntv2.GlobalHeader.MINOR_T}");
+
+    for (int i = 0; i < ntv2.SubGrids.Count; i++)
+    {
+        var sg = ntv2.SubGrids[i];
+        Console.WriteLine($"\n== Sub-Grid #{i + 1} ==");
+        Console.WriteLine($"  Name     = {sg.Header.SUB_NAME}");
+        Console.WriteLine($"  Parent   = {sg.Header.PARENT}");
+        Console.WriteLine($"  Created  = {sg.Header.CREATED}");
+        Console.WriteLine($"  Updated  = {sg.Header.UPDATED}");
+        Console.WriteLine($"  SouthLat = {sg.Header.S_LAT}");
+        Console.WriteLine($"  NorthLat = {sg.Header.N_LAT}");
+        Console.WriteLine($"  EastLong = {sg.Header.E_LONG}");
+        Console.WriteLine($"  WestLong = {sg.Header.W_LONG}");
+        Console.WriteLine($"  LatInc   = {sg.Header.LAT_INC}");
+        Console.WriteLine($"  LongInc  = {sg.Header.LONG_INC}");
+        Console.WriteLine($"  GsCount  = {sg.Header.GS_COUNT}");
+        Console.WriteLine($"  -> #Points read: {sg.Points.Count}");
+    }
 }
 
 Console.ReadLine();

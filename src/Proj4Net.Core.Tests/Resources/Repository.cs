@@ -7,16 +7,21 @@ namespace Proj4Net.Core.Tests.Resources
     {
         private static readonly Assembly _asm = Assembly.GetExecutingAssembly();
 
-        public static Stream Open(string resourceName)
+        //public static Stream Open(string resourceName)
+        //{
+        //    var mrs = "Proj4Net.Core.Tests.Properties.Resources." + resourceName;
+        //    var s = _asm.GetManifestResourceStream(mrs);
+        //    if (s == null)
+        //        return new MemoryStream();
+        //    using (var sr = new BinaryReader(s))
+        //    {
+        //        return new MemoryStream(sr.ReadBytes((int) s.Length));
+        //    }
+        //}
+
+        public static Stream Open(byte[] bytes)
         {
-            var mrs = "Proj4Net.Tests.Resources." + resourceName;
-            var s = _asm.GetManifestResourceStream(mrs);
-            if (s == null)
-                return new MemoryStream();
-            using (var sr = new BinaryReader(s))
-            {
-                return new MemoryStream(sr.ReadBytes((int) s.Length));
-            }
+            return new MemoryStream(bytes);
         }
     }
 }

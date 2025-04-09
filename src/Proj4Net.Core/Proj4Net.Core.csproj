@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Release_Internal;Debug_Internal</Configurations>
-    <Version>1.23.2504</Version>
+    <Version>1.25.1501</Version>
     <Authors>Jürgen Gstaltmaier</Authors>
-    <Copyright>2023, Jürgen Gstaltmaier</Copyright>
+    <Copyright>2025, Jürgen Gstaltmaier</Copyright>
     <RepositoryUrl>https://github.com/jugstalt/Proj4Net.Core</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

@@ -18,7 +18,7 @@ namespace Proj4Net.Core.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open("TestData.csv"))
+            using (var file = Resources.Repository.Open(/*"TestData.csv"*/Properties.Resources.TestData))
             {
                 var reader = new MetaCRSTestFileReader(file);
 
@@ -36,7 +36,7 @@ namespace Proj4Net.Core.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_ESRI_nad83_.csv"*/"PROJ4_SPCS_ESRI_nad83_modified.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_ESRI_nad83_modified.csv"*/Proj4Net.Core.Tests.Properties.Resources.PROJ4_SPCS_ESRI_nad83_modified))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());
@@ -53,7 +53,7 @@ namespace Proj4Net.Core.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_EPSG_nad83.csv"*/"PROJ4_SPCS_EPSG_nad83_modified.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_EPSG_nad83_modified"*/Proj4Net.Core.Tests.Properties.Resources.PROJ4_SPCS_EPSG_nad83_modified))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());
@@ -70,7 +70,7 @@ namespace Proj4Net.Core.Tests.IO
         {
             var passed = 0;
             var tests = new List<MetaCRSTestCase>();
-            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_nad27.csv"*/"PROJ4_SPCS_nad27_modified.csv"))
+            using (var file = Resources.Repository.Open(/*"PROJ4_SPCS_nad27_modified.csv"*/ Properties.Resources.PROJ4_SPCS_nad27_modified))
             {
                 var reader = new MetaCRSTestFileReader(file);
                 tests.AddRange(reader.ReadTests());

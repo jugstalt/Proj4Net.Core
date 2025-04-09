@@ -18,7 +18,9 @@
     <None Remove="Resources\TestData.csv" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\PROJ4_SPCS_EPSG_nad83_modified.csv" />
+    <EmbeddedResource Include="Resources\PROJ4_SPCS_EPSG_nad83_modified.csv">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\PROJ4_SPCS_EPSG_nad83.csv" />
     <EmbeddedResource Include="Resources\PROJ4_SPCS_ESRI_nad83_modified.csv" />
     <EmbeddedResource Include="Resources\PROJ4_SPCS_ESRI_nad83.csv" />
@@ -33,5 +35,18 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Proj4Net.Core\Proj4Net.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
