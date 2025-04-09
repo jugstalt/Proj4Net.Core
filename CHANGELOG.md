@@ -16,9 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - added support for *.gsb grid files
-  ``Proj4Net.Core.IO.Path.PROJ_LIB`` must be set to a path, where grid file is located
-  use paramter +nadgrids=filename.gsb
-  grids must be grids that transform from target to WGS84 (or some equivalent)
+  
+  - ``Proj4Net.Core.IO.Path.PROJ_LIB`` must be set to a path, where grid file is located
+  - use paramter +nadgrids=filename.gsb
+  - grids must be grids that transform from target to WGS84 (or some equivalent)
 
 ### Fixed
 
