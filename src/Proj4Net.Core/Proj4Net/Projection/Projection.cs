@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright 2006 Jerry Huxtable
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -249,6 +249,16 @@ namespace Proj4Net.Core.Projection
             }
 
             return ProjectRadians(x, src.Y, dst);
+        }
+
+        public Coordinate ProjectRadiansXY(double x, double y, Coordinate dst)
+        {
+            if (_projectionLongitude != 0)
+            {
+                x = ProjectionMath.NormalizeLongitude(x - _projectionLongitude);
+            }
+
+            return ProjectRadians(x, y, dst);
         }
 
         ///<summary>

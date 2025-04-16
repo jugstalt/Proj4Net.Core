@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{BF51F808-13A3-44E6-8F74-20686AFAEA76}</ProjectGuid>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Copyright>Copyright ©  2018</Copyright>
     <NoWarn>1591</NoWarn>
     <Platforms>x64</Platforms>

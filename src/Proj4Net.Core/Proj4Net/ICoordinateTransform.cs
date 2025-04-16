@@ -1,3 +1,5 @@
+﻿using System;
+
 namespace Proj4Net.Core
 {
     /// <summary>
@@ -27,5 +29,8 @@ namespace Proj4Net.Core
         ///<exception cref="Proj4NetException">If a computation error is encountered</exception>
         Coordinate Transform(Coordinate src, Coordinate tgt);
 
+        Coordinate Transform(Coordinate src);
+
+        void Transform(int count, Action<int, Coordinate> setAction, Action<int, Coordinate> getAction, bool parallelize = false);
     }
 }

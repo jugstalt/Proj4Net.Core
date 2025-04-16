@@ -8,9 +8,9 @@ CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
 //var toCrs = crsFactory.CreateFromName(to);
 
 
-//var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
+var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
 //var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84");
-var toCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
+//var toCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
 //var toCrs = crsFactory.CreateFromParameters(to, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +towgs84=0,0,0,0,0,0,0");
 /*
  * Create input and output points.
@@ -21,14 +21,14 @@ ProjCoordinate p2 = new ProjCoordinate();
 ProjCoordinate p0 = new ProjCoordinate();
 
 // 15 48 with grid
-var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb");
-p.X = -99411.663305323091;
-p.Y = 318802.50516882259;
+//var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb");
+//p.X = -99411.663305323091;
+//p.Y = 318802.50516882259;
 
 // 15 48 with +towgs84
-//var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
-//p.X = -99411.687267207672;
-//p.Y = 318802.40399568342;
+var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
+p.X = -99411.687267207672;
+p.Y = 318802.40399568342;
 
 
 // 15 48 without datum
@@ -42,7 +42,46 @@ Console.WriteLine($"Original coordinates   : {Math.Round(p.X, 8)}, {Math.Round(p
  * Transform point
  */
 ICoordinateTransform trans = ctFactory.CreateTransform(fromCrs, toCrs);
-trans.Transform(p, p2);
+
+int interations = 10_000_000;
+
+var helper = new Coordinate();
+// Warmup
+//for (int i = 0; i < interations; i++)
+//{
+//    trans.Transform(p, p2, helper);
+//}
+
+Parallel.For(0, interations, i =>
+{
+    trans.Transform(p, p2);
+});
+
+var dtStart = DateTime.Now;
+
+trans.Transform(interations, 
+    (i, from) => {
+        from.X = p.X;
+        from.Y = p.Y;
+    },
+    (i, to) => {
+        p2.X = to.X;
+        p2.Y = to.Y;
+    }, 
+    true);
+
+//Parallel.For(0, interations, i =>
+//{
+//    trans.Transform(p, p2);
+//});
+
+//for (int i = 0; i < interations; i++)
+//{
+//    trans.Transform(p, p2);
+//}
+var dtStop = DateTime.Now;
+
+Console.WriteLine("Made {0} iterations in {1} ms", interations, (dtStop - dtStart).TotalMilliseconds);
 
 Console.WriteLine($"Transformed coordinates: {Math.Round(p2.X, 8)}, {Math.Round(p2.Y, 8)}");
 /*
@@ -52,6 +91,8 @@ trans = ctFactory.CreateTransform(toCrs, fromCrs);
 trans.Transform(p2, p0);
 
 Console.WriteLine($"Transformed coordinates: {Math.Round(p0.X, 8)}, {Math.Round(p0.Y, 8)}");
+
+return;
 
 string path = @"G:\github\jugstalt\Proj4Net.Core\src\Proj4Net.Playground\bin\Debug\net6.0\share\proj";
 

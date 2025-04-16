@@ -1,6 +1,7 @@
-using System;
-using Proj4Net.Core.Datum;
+﻿using Proj4Net.Core.Datum;
 using Proj4Net.Core.Projection;
+using System;
+using System.Threading.Tasks;
 //using ICoordinateReferenceSystem = GeoAPI.CoordinateSystems.ICoordinateSystem;
 
 namespace Proj4Net.Core
@@ -58,10 +59,15 @@ namespace Proj4Net.Core
                                         CoordinateReferenceSystem targetCRS)
         {
             if (sourceCRS == null)
+            {
                 throw new ArgumentNullException("sourceCRS");
+            }
+
             if (targetCRS == null)
+            {
                 throw new ArgumentNullException("targetCRS");
-            
+            }
+
             _sourceCRS = sourceCRS;
             _targetCRS = targetCRS;
 
@@ -73,35 +79,44 @@ namespace Proj4Net.Core
             _doDatumTransform = _doInverseProjection && _doForwardProjection
               && !sourceCRS.Datum.Equals(targetCRS.Datum);
 
-            if (!_doDatumTransform) 
+            if (!_doDatumTransform)
+            {
                 return;
+            }
 
             var isEllipsoidEqual = sourceCRS.Datum.Ellipsoid.Equals(targetCRS.Datum.Ellipsoid);
             if (!isEllipsoidEqual)
+            {
                 _transformViaGeocentric = true;
-            if (sourceCRS.Datum.HasTransformToWGS84 || 
+            }
+
+            if (sourceCRS.Datum.HasTransformToWGS84 ||
                 targetCRS.Datum.HasTransformToWGS84)
+            {
                 _transformViaGeocentric = true;
+            }
 
             // jugstalt
             //if (sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift ||
             //   targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             //    _transformViaGeocentric = false;
 
-            if (!_transformViaGeocentric) 
+            if (!_transformViaGeocentric)
+            {
                 return;
+            }
 
             //_sourceGeoConv = new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
             //_targetGeoConv = new GeocentricConverter(targetCRS.Datum.Ellipsoid);
 
             // jugstalt
-            _sourceGeoConv = 
+            _sourceGeoConv =
                 sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
                 sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift  // gridshift always leads to WGS84, ETRS, ...?
-                ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid) 
+                ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
                 : new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
 
-            _targetGeoConv = 
+            _targetGeoConv =
                 targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
                 targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift
                 ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
@@ -143,7 +158,9 @@ namespace Proj4Net.Core
             //Adjust source prime meridian if specified other than Greenwich
             var primeMeridian = _sourceCRS.Projection.PrimeMeridian;
             if (primeMeridian.Name != NamedMeridian.Greenwich)
+            {
                 primeMeridian.InverseAdjust(geoCoord);
+            }
 
             if (_doDatumTransform)
             {
@@ -153,7 +170,9 @@ namespace Proj4Net.Core
             //Adjust target prime meridian if specified other than Greenwich
             primeMeridian = _targetCRS.Projection.PrimeMeridian;
             if (primeMeridian.Name != NamedMeridian.Greenwich)
+            {
                 primeMeridian.Adjust(geoCoord);
+            }
 
             if (_doForwardProjection)
             {
@@ -168,6 +187,73 @@ namespace Proj4Net.Core
             return tgt;
         }
 
+        public Coordinate Transform(Coordinate src)
+        {
+            // NOTE: this method may be called many times, so needs to be as efficient as possible
+            Coordinate geoCoord = new Coordinate();
+
+            if (_doInverseProjection)
+            {
+                // inverse project to geographic
+                _sourceCRS.Projection.InverseProjectRadians(src, geoCoord);
+            }
+            else
+            {
+                geoCoord.CoordinateValue = src;
+            }
+
+            //Adjust source prime meridian if specified other than Greenwich
+            var primeMeridian = _sourceCRS.Projection.PrimeMeridian;
+            if (primeMeridian.Name != NamedMeridian.Greenwich)
+            {
+                primeMeridian.InverseAdjust(geoCoord);
+            }
+
+            if (_doDatumTransform)
+            {
+                DatumTransform(geoCoord);
+            }
+
+            //Adjust target prime meridian if specified other than Greenwich
+            primeMeridian = _targetCRS.Projection.PrimeMeridian;
+            if (primeMeridian.Name != NamedMeridian.Greenwich)
+            {
+                primeMeridian.Adjust(geoCoord);
+            }
+
+            if (_doForwardProjection)
+            {
+                // project from geographic to planar
+                _targetCRS.Projection.ProjectRadiansXY(geoCoord.X, geoCoord.Y, geoCoord);
+            }
+
+            return geoCoord;
+        }
+
+        public void Transform(int count, Action<int, Coordinate> setAction, Action<int, Coordinate> getAction, bool parallelize = false)
+        {
+            if (parallelize)
+            {
+                Parallel.For(0, count, i =>
+                {
+                    var from = new Coordinate();
+                    setAction(i, from);
+                    var to = Transform(from);
+                    getAction(i, to);
+                });
+            }
+            else
+            {
+                var from = new Coordinate();
+                for (int i = 0; i < count; i++)
+                {
+                    setAction(i, from);
+                    var to = Transform(from);
+                    getAction(i, to);
+                }
+            }
+        }
+
         /// <summary>
         /// Converts from source to target datum
         /// </summary>
@@ -178,10 +264,12 @@ namespace Proj4Net.Core
             /*      Short cut if the datums are identical.                          */
             /* -------------------------------------------------------------------- */
             if (_sourceCRS.Datum.Equals(_targetCRS.Datum))
+            {
                 return;
+            }
 
             /* -------------------------------------------------------------------- */
-            /*      Apply grid shift if required                                    */ 
+            /*      Apply grid shift if required                                    */
             /* -------------------------------------------------------------------- */
             if (_sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             {
@@ -201,11 +289,11 @@ namespace Proj4Net.Core
                 /* -------------------------------------------------------------------- */
                 /*      Convert between datums.                                         */
                 /* -------------------------------------------------------------------- */
-                
+
                 if (_sourceCRS.Datum.HasTransformToWGS84)
                 {
                     _sourceCRS.Datum.TransformFromGeocentricToWgs84(pt);
-                } 
+                }
                 if (_targetCRS.Datum.HasTransformToWGS84)
                 {
                     _targetCRS.Datum.TransformToGeocentricFromWgs84(pt);

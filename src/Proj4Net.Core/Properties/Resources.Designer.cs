@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Proj4Net.Core.Core.Properties {
+namespace Proj4Net.Core.Properties {
     using System;
     
     
