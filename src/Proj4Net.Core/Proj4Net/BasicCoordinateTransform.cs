@@ -142,6 +142,14 @@ namespace Proj4Net.Core
         /// <exception cref="Proj4NetException">if a computation error is encountered</exception>
         public Coordinate Transform(Coordinate src, Coordinate tgt)
         {
+            tgt.CoordinateValue = Transform(src);
+
+            return tgt;
+        }
+
+        public Coordinate Transform_od(Coordinate src, Coordinate tgt) 
+        { 
+            
             // NOTE: this method may be called many times, so needs to be as efficient as possible
             Coordinate geoCoord = new ProjCoordinate(0, 0);
 
@@ -322,6 +330,5 @@ namespace Proj4Net.Core
             }
 
         }
-
     }
 }

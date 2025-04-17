@@ -1,4 +1,4 @@
-// StreamTokenizer.cs
+﻿// StreamTokenizer.cs
 // 
 // Copyright (C) 2002-2004 Ryan Seghers
 //
@@ -1550,7 +1550,7 @@ namespace RTools.Util
 			{
 				textReader.Close();
 				if (fr != null) fr.Close();
-				throw e;
+				throw;
 			}
 
 			if (textReader != null) textReader.Close();

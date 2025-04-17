@@ -9,8 +9,8 @@ namespace Proj4Net.Core.Datum.Grids
     public class GridTable
     {
         private static readonly object GridTablesLock = new object();
-        private static readonly Dictionary<Uri, GridTable> GridTables =
-            new Dictionary<Uri, GridTable>(); 
+        private static readonly Dictionary<string, GridTable> GridTables =
+            new Dictionary<string, GridTable>(); 
         
         private const double HugeValue = double.MaxValue;
         private const int MaxIterations = 9;
@@ -21,15 +21,22 @@ namespace Proj4Net.Core.Datum.Grids
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public static GridTable Load(Uri location)
+        public static GridTable Load(string grid)
         {
+            var gridOptional = grid.StartsWith("@");
+
             GridTable table;
-            if (!GridTables.TryGetValue(location, out table))
+            if (!GridTables.TryGetValue(grid, out table))
             {
                 lock (GridTablesLock)
                 {
-                    if (!GridTables.TryGetValue(location, out table))
+                    if (!GridTables.TryGetValue(grid, out table))
                     {
+                        var gridName = gridOptional ? grid.Substring(1) : grid;
+                        var location = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
+
+                        Console.WriteLine($"Load Grid Table {grid}: {location}");
+
                         var ext = Path.GetExtension(location.LocalPath) ?? string.Empty;
                         GridTableLoader loader;
                         switch (ext.ToLower())
@@ -51,7 +58,9 @@ namespace Proj4Net.Core.Datum.Grids
                                 throw new ArgumentException();
                         }
                         table = new GridTable(loader);
-                        GridTables.Add(location, table);
+                        GridTables.Add(grid, table);
+
+                        Console.WriteLine($"Load Grid Table {grid} succeeded");
                     }
                 }
             }

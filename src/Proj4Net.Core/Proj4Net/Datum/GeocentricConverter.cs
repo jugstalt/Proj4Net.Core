@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Datum
@@ -149,7 +149,7 @@ namespace Proj4Net.Core.Datum
             double CPHI;     /* cos of searched geodetic latitude */
             double SPHI;     /* sin of searched geodetic latitude */
             double SDPHI;    /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
-            Boolean At_Pole;     /* indicates location is in polar region */
+            bool At_Pole;     /* indicates location is in polar region */
             int iter;        /* # of continous iteration, max. 30 is always enough (s.a.) */
 
             double X = p.X;
@@ -189,7 +189,7 @@ namespace Proj4Net.Core.Datum
 
             /* --------------------------------------------------------------
              * Following iterative algorithm was developped by
-             * "Institut f�r Erdmessung", University of Hannover, July 1988.
+             * "Institut für Erdmessung", University of Hannover, July 1988.
              * Internet: www.ife.uni-hannover.de
              * Iterative computation of CPHI,SPHI and Height.
              * Iteration of CPHI and SPHI to 10**-12 radian resp.

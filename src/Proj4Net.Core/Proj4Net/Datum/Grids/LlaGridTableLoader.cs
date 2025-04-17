@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using Proj4Net.Core.Utility;
@@ -57,15 +58,18 @@ namespace Proj4Net.Core.Datum.Grids
                 while (!sr.EndOfStream)
                 {
                     var line = sr.ReadLine();
+                    
                     if (string.IsNullOrEmpty(line)) continue;
+                    
                     var posColon = line.IndexOf(':');
                     string[] values;
                     int valueIndex;
+                    
                     if (posColon > 0)
                     {
                         phiIndex = int.Parse(line.Substring(0, posColon), NumberStyles.Integer);
                         coeff[phiIndex] = new PhiLambda[table.NumLambdas];
-                        line = line.Substring(posColon + 1);
+                        line = line.Substring(posColon + 1).Trim();
                         values = line.Split(new[] {' '});
                         lambda = ProjectionMath.ArcSecondsToRadians(long.Parse(values[0], NumberStyles.Integer));
                         phi = ProjectionMath.ArcSecondsToRadians(long.Parse(values[1], NumberStyles.Integer));
@@ -76,7 +80,7 @@ namespace Proj4Net.Core.Datum.Grids
                     }
                     else
                     {
-                        values = line.Split(new[] {' '});
+                        values = line.Trim().Split(new[] {' '});
                         valueIndex = 0;
                     }
 

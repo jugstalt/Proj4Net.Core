@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 
 namespace Proj4Net.Core.Datum.Grids
@@ -15,8 +15,7 @@ namespace Proj4Net.Core.Datum.Grids
             using (var stream = OpenGridTableStream())
             {
                 var header = new byte[176];
-                if (stream.Read(header, 0, 176) != 176)
-                    return false;
+                stream.ReadExactly(header, 0, 176);
 
                 table.LowerLeft = new PhiLambda
                     {

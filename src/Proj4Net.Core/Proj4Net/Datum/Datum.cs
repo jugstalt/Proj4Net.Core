@@ -355,18 +355,19 @@ namespace Proj4Net.Core.Datum
             foreach (var grid in _grids)
             {
                 var gridOptional = grid.StartsWith("@");
-                var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
-                var uri = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
-                var table = GridTable.Load(uri);
+                //var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
+                //var uri = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
+
+                var table = GridTable.Load(grid);
                 if (table == null)
-                {    
+                {
                     if (!gridOptional)
                         throw new Proj4NetException();
                     continue;
                 }
 
                 GridTable useTable;
-                var c1 = new PhiLambda { Lambda = c.X, Phi = c.Y  };
+                var c1 = new PhiLambda { Lambda = c.X, Phi = c.Y };
                 if (table.Applies(c1, out useTable))
                 {
                     useTable.Apply(c, inverse);

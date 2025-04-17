@@ -8,10 +8,10 @@ CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
 //var toCrs = crsFactory.CreateFromName(to);
 
 
-var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
+//var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
 //var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84");
 //var toCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
-//var toCrs = crsFactory.CreateFromParameters(to, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +towgs84=0,0,0,0,0,0,0");
+var toCrs = crsFactory.CreateFromParameters(to, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +towgs84=0,0,0,0,0,0,0");
 /*
  * Create input and output points.
  * These can be constructed once per thread and reused.
@@ -47,15 +47,15 @@ int interations = 10_000_000;
 
 var helper = new Coordinate();
 // Warmup
-//for (int i = 0; i < interations; i++)
-//{
-//    trans.Transform(p, p2, helper);
-//}
-
-Parallel.For(0, interations, i =>
+for (int i = 0; i < 1000; i++)
 {
     trans.Transform(p, p2);
-});
+}
+
+//Parallel.For(0, 1000, i =>
+//{
+//    trans.Transform(p, p2);
+//});
 
 var dtStart = DateTime.Now;
 
@@ -68,7 +68,7 @@ trans.Transform(interations,
         p2.X = to.X;
         p2.Y = to.Y;
     }, 
-    true);
+    false);
 
 //Parallel.For(0, interations, i =>
 //{

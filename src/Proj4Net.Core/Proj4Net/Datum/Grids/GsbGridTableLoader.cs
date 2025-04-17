@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 
 namespace Proj4Net.Core.Datum.Grids
@@ -29,8 +29,7 @@ namespace Proj4Net.Core.Datum.Grids
             using (var s = OpenGridTableStream())
             {
                 s.Seek(_dataOffset, SeekOrigin.Current);
-                if (s.Read(headerBuffer, 0, 176) != 176)
-                    return false;
+                s.ReadExactly(headerBuffer, 0, 176);
             }
 
             return _dataOffset == 0
