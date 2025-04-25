@@ -59,11 +59,11 @@ internal class GridTable : IDatumShiftTransformation
         return true;
     }
 
-    public Coordinate Apply(Coordinate geoCoord, bool inverse)
+    public void Apply(Coordinate geoCoord, bool inverse)
     {
         var input = new PhiLambda {Lambda = geoCoord.X, Phi = geoCoord.Y};
         if (input.Lambda == HugeValue)
-            return geoCoord;
+            return;
 
         if (!_fullyLoaded)
         {
@@ -79,8 +79,6 @@ internal class GridTable : IDatumShiftTransformation
         
         geoCoord.X = output.Lambda;
         geoCoord.Y = output.Phi;
-
-        return geoCoord;
     }
 
     private PhiLambda Convert(PhiLambda input, bool inverse)

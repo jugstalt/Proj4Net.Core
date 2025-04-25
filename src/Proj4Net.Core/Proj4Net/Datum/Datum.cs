@@ -54,8 +54,7 @@ namespace Proj4Net.Core.Datum
             WGS84 = 1,
             ThreeParameters = 2,
             SevenParameters = 3,
-            GridShift = 4,
-            NoDatum = 5   // jugstalt
+            GridShift = 4
         }
 
         public static readonly Datum WGS84 = new Datum("WGS84", 0, 0, 0, Ellipsoid.WGS84, "WGS84");
@@ -83,11 +82,11 @@ namespace Proj4Net.Core.Datum
                      String name)
                      : this(code, (double[])null, ellipsoid, name)
         {
-            if (transformSpec == "@null")   // jugstalt
-            {
-                _grids = null;
-            }
-            else
+            //if (transformSpec == "@null")   // jugstalt
+            //{
+            //    _grids = null;
+            //}
+            //else
             {
                 _grids = transformSpec.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
@@ -199,8 +198,8 @@ namespace Proj4Net.Core.Datum
                 {
                     return _grids != null
                         ? DatumTransformType.GridShift
-                        : DatumTransformType.NoDatum;   // jugstalt
-                                                        //: DatumTransformType.WGS84;
+                        //: DatumTransformType.NoDatum;   // jugstalt
+                        : DatumTransformType.WGS84;
                 }
 
                 if (IsIdentity(_transform))
@@ -256,7 +255,8 @@ namespace Proj4Net.Core.Datum
             }
         }
 
-        public const double ELLIPSOID_E2_TOLERANCE = 0.000000000050;
+        public const double ELLIPSOID_E2_TOLERANCE = 0.0000000000050;
+        public const double ELLIPSOID_R_TOLERANCE = 0.00050;  // jugstalt
 
         /// <summary>
         /// Tests if this is equal to another {@link Datum}.
@@ -278,14 +278,22 @@ namespace Proj4Net.Core.Datum
             }
 
             // false if ellipsoids are not (approximately) equal
-            if (_ellipsoid.EquatorRadius != _ellipsoid.EquatorRadius)
+            //if (_ellipsoid.EquatorRadius != _ellipsoid.EquatorRadius)
+            //{
+            //    if (Math.Abs(_ellipsoid.EccentricitySquared
+            //         - datum._ellipsoid.EccentricitySquared) > ELLIPSOID_E2_TOLERANCE)
+            //    {
+            //        return false;
+            //    }
+            //}
+            // jugstalt
+            if (Math.Abs(_ellipsoid.EquatorRadius - datum.Ellipsoid.EquatorRadius) > ELLIPSOID_R_TOLERANCE ||
+                Math.Abs(_ellipsoid.EccentricitySquared - datum._ellipsoid.EccentricitySquared) > ELLIPSOID_E2_TOLERANCE)
             {
-                if (Math.Abs(_ellipsoid.EccentricitySquared
-                     - datum._ellipsoid.EccentricitySquared) > ELLIPSOID_E2_TOLERANCE)
-                {
-                    return false;
-                }
+                return false;
             }
+
+            
 
             // false if transform parameters are not identical
             if (TransformType == DatumTransformType.ThreeParameters || TransformType == DatumTransformType.SevenParameters)

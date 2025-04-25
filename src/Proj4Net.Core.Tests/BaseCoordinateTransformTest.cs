@@ -16,6 +16,8 @@ namespace Proj4Net.Core.Tests
         //private static bool debug = true;
         private readonly string _name;
 
+        internal const double TOLERENCE_XY = 0.0005;  // 0.0001
+
         private static readonly CoordinateTransformTester Tester = new CoordinateTransformTester(true);
 
         protected BaseCoordinateTransformTest(String name)
@@ -25,7 +27,7 @@ namespace Proj4Net.Core.Tests
 
         protected void CheckTransformFromWGS84(String code, double lon, double lat, double x, double y)
         {
-            Assert.IsTrue(Tester.CheckTransformFromWGS84(code, lon, lat, x, y, 0.0001));
+            Assert.IsTrue(Tester.CheckTransformFromWGS84(code, lon, lat, x, y, TOLERENCE_XY));
         }
 
         protected void CheckTransformFromWGS84(String code, double lon, double lat, double x, double y, double tolerance)

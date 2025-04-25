@@ -56,7 +56,7 @@ namespace Proj4Net.Core
         ///<param name="sourceCRS">the source CRS to transform from</param>
         ///<param name="targetCRS">the target CRS to transform to</param>
         public BasicCoordinateTransform(CoordinateReferenceSystem sourceCRS,
-                                        CoordinateReferenceSystem targetCRS)
+                                        CoordinateReferenceSystem targetCRS) 
         {
             if (sourceCRS == null)
             {
@@ -106,18 +106,21 @@ namespace Proj4Net.Core
                 return;
             }
 
+
             //_sourceGeoConv = new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
             //_targetGeoConv = new GeocentricConverter(targetCRS.Datum.Ellipsoid);
 
             // jugstalt
             _sourceGeoConv =
-                sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
+                //sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
+                //sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.WGS84 ||
                 sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift  // gridshift always leads to WGS84, ETRS, ...?
                 ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
                 : new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
 
             _targetGeoConv =
-                targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
+                //targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
+                //targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.WGS84 ||
                 targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift
                 ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
                 : new GeocentricConverter(targetCRS.Datum.Ellipsoid);
@@ -147,7 +150,7 @@ namespace Proj4Net.Core
             return tgt;
         }
 
-        public Coordinate Transform_od(Coordinate src, Coordinate tgt) 
+        public Coordinate Transform_old(Coordinate src, Coordinate tgt) 
         { 
             
             // NOTE: this method may be called many times, so needs to be as efficient as possible

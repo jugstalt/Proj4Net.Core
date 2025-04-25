@@ -1,11 +1,16 @@
 ﻿using Proj4Net.Core.Abstraction;
 using Proj4Net.Core.Datum.Grids;
+using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Datum.ShiftTransforms;
 internal class CoordinateTransformShift : IDatumShiftTransformation
 {
     private static CoordinateReferenceSystemFactory CrsFactory = new();
     private static CoordinateTransformFactory CtFactory = new();
+
+    protected const double RTD = ProjectionMath.RadiansToDegrees;
+    protected const double DTR = ProjectionMath.DegreesToRadians;
 
     private readonly ICoordinateTransform _transform, _transformInverse;
 
@@ -31,13 +36,17 @@ internal class CoordinateTransformShift : IDatumShiftTransformation
         return true;
     }
 
-    public Coordinate Apply(Coordinate geoCoord, bool inverse)
+    public void Apply(Coordinate geoCoord, bool inverse)
     {
+        geoCoord.X *= RTD;
+        geoCoord.Y *= RTD;
+
         var transformedGeoCoord = inverse
             ? _transformInverse.Transform(geoCoord)
             : _transform.Transform(geoCoord);
 
-        return transformedGeoCoord;
+        geoCoord.X = transformedGeoCoord.X * DTR;
+        geoCoord.Y = transformedGeoCoord.Y * DTR;
     }
 
     #endregion

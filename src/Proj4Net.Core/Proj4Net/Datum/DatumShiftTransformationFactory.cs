@@ -31,7 +31,7 @@ internal class DatumShiftTransformationFactory
                     {
                         string ellipsoidName = gridName.Substring("ellps:".Length);
 
-                        datumShiftTransformation = CoordinateTransformShift.Create(grid, $"+proj=longlat +ellps={ellipsoidName} +datum +towgs84=0,0,0,0,0,0,0");
+                        datumShiftTransformation = CoordinateTransformShift.Create(grid, $"+proj=longlat +ellps={ellipsoidName}");
                         _shiftTransformations.Add(grid, datumShiftTransformation);
 
                         return datumShiftTransformation;
@@ -48,6 +48,13 @@ internal class DatumShiftTransformationFactory
                         _shiftTransformations.Add(grid, datumShiftTransformation);
 
                         return datumShiftTransformation;
+                    }
+                    
+                    if(!File.Exists(location.LocalPath))
+                    {
+                        _shiftTransformations.Add(grid, null);
+
+                        return null;
                     }
 
                     var ext = Path.GetExtension(location.LocalPath)?.ToLowerInvariant() ?? string.Empty;

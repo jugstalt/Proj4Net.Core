@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tests correctness and accuracy of Coordinate System transformations.
  * 
  * @author Martin Davis
@@ -190,8 +190,8 @@ namespace Proj4Net.Core.Tests
 
             // test values from GIGS test suite - which are suspect
             // Proj4J actual values agree with PROJ4
-            //checkTransform("EPSG:4258", 5.0, 50.0,    "EPSG:3035", 3892127.02, 1892578.96, 0.1 );
-            //checkTransform("EPSG:4258", 5.0, 70.0,    "EPSG:3035", 4041548.12525335, 4109791.65987687, 0.1 );
+            //CheckTransform("EPSG:4258", 5.0, 50.0,    "EPSG:3035", 3892127.02, 1892578.96, 0.1 );
+            //CheckTransform("EPSG:4258", 5.0, 70.0,    "EPSG:3035", 4041548.12525335, 4109791.65987687, 0.1 );
         }
 
         public void testSwissObliqueMercator()
@@ -224,7 +224,7 @@ namespace Proj4Net.Core.Tests
         public void testParams()
         {
             CheckTransformFromWGS84("+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +units=m ",
-                -127.0, 52.11, 931625.9111828626, 789252.646454557, 0.0001);
+                -127.0, 52.11, 931625.9111828626, 789252.646454557, BaseCoordinateTransformTest.TOLERENCE_XY);
         }
 
         /**

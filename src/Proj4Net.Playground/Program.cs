@@ -8,10 +8,10 @@ CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
 //var toCrs = crsFactory.CreateFromName(to);
 
 
-var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
+//var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0,0,0,0,0");
 //var toCrs = crsFactory.CreateFromParameters(from, "+proj=longlat +ellps=WGS84 +datum=WGS84");
 //var toCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
-//var toCrs = crsFactory.CreateFromParameters(to, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +towgs84=0,0,0,0,0,0,0");
+var toCrs = crsFactory.CreateFromParameters(to, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +towgs84=0,0,0,0,0,0,0");
 /*
  * Create input and output points.
  * These can be constructed once per thread and reused.
@@ -26,7 +26,7 @@ ProjCoordinate p0 = new ProjCoordinate();
 //p.Y = 318802.50516882259;
 
 // 15 48 with grid & ellips
-var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb,ellps:GRS80");
+var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb,ellps:bessel");
 p.X = -99411.663305323091;
 p.Y = 318802.50516882259;
 
