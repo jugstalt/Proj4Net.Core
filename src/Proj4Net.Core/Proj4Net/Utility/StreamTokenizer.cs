@@ -1546,7 +1546,7 @@ namespace RTools.Util
 					return(false);
 				}
 			}
-			catch(StreamTokenizerUntermException e)
+			catch(StreamTokenizerUntermException)
 			{
 				textReader.Close();
 				if (fr != null) fr.Close();

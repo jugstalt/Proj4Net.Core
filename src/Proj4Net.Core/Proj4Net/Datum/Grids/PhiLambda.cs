@@ -1,8 +1,8 @@
-using Proj4Net.Core.Utility;
+﻿using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Datum.Grids
 {
-    internal struct PhiLambda
+    public struct PhiLambda
     {
         public double Phi;
         public double Lambda;

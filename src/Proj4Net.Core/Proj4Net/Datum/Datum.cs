@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Proj4Net.Core.Abstraction;
+using Proj4Net.Core.Datum.Grids;
+using Proj4Net.Core.Proj4Net.Datum;
+using Proj4Net.Core.Utility;
 using System;
 using System.Collections.Generic;
-using Proj4Net.Core.Datum.Grids;
-using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Datum
 {
@@ -358,19 +360,19 @@ namespace Proj4Net.Core.Datum
                 //var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
                 //var uri = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
 
-                var table = GridTable.Load(grid);
-                if (table == null)
+                var datumShiftTransformation = DatumShiftTransformationFactory.Load(grid);
+                if (datumShiftTransformation == null)
                 {
                     if (!gridOptional)
                         throw new Proj4NetException();
                     continue;
                 }
 
-                GridTable useTable;
+                IDatumShiftTransformation useDatumShiftTransformation;
                 var c1 = new PhiLambda { Lambda = c.X, Phi = c.Y };
-                if (table.Applies(c1, out useTable))
+                if (datumShiftTransformation.Applies(c1, out useDatumShiftTransformation))
                 {
-                    useTable.Apply(c, inverse);
+                    useDatumShiftTransformation.Apply(c, inverse);
                 }
             }
         }
