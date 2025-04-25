@@ -33,9 +33,11 @@ internal class CoordinateTransformShift : IDatumShiftTransformation
 
     public Coordinate Apply(Coordinate geoCoord, bool inverse)
     {
-        return inverse
+        var transformedGeoCoord = inverse
             ? _transformInverse.Transform(geoCoord)
             : _transform.Transform(geoCoord);
+
+        return transformedGeoCoord;
     }
 
     #endregion

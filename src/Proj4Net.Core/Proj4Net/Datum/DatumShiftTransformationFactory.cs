@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Proj4Net.Core.Proj4Net.Datum;
+namespace Proj4Net.Core.Datum;
 internal class DatumShiftTransformationFactory
 {
     private static readonly object DatumShiftTransformationLoadLock = new object();
@@ -15,7 +15,7 @@ internal class DatumShiftTransformationFactory
     {
         var gridOptional = grid.StartsWith("@");
 
-        IDatumShiftTransformation datumShiftTransformation;
+        IDatumShiftTransformation datumShiftTransformation = null;
 
         if (!_shiftTransformations.TryGetValue(grid, out datumShiftTransformation))
         {
@@ -31,7 +31,7 @@ internal class DatumShiftTransformationFactory
                     {
                         string ellipsoidName = gridName.Substring("ellps:".Length);
 
-                        datumShiftTransformation = CoordinateTransformShift.Create(grid, $"+proj=longlat +ellps={ellipsoidName} +no_defs +type=crs");
+                        datumShiftTransformation = CoordinateTransformShift.Create(grid, $"+proj=longlat +ellps={ellipsoidName} +datum +towgs84=0,0,0,0,0,0,0");
                         _shiftTransformations.Add(grid, datumShiftTransformation);
 
                         return datumShiftTransformation;
