@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>net9.0</TargetFramework>
     <Configurations>Debug;Release;Release_Internal;Debug_Internal</Configurations>
-    <Version>2.25.1602</Version>
+    <Version>2.25.1802</Version>
     <Authors>Jürgen Gstaltmaier</Authors>
     <Copyright>2025, Jürgen Gstaltmaier</Copyright>
     <RepositoryUrl>https://github.com/jugstalt/Proj4Net.Core</RepositoryUrl>

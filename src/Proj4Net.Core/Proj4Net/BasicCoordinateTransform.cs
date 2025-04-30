@@ -98,7 +98,7 @@ namespace Proj4Net.Core
 
             // jugstalt
             //if (sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift ||
-            //   targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
+            //    targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             //    _transformViaGeocentric = false;
 
             if (!_transformViaGeocentric)
@@ -112,15 +112,11 @@ namespace Proj4Net.Core
 
             // jugstalt
             _sourceGeoConv =
-                //sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
-                //sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.WGS84 ||
                 sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift  // gridshift always leads to WGS84, ETRS, ...?
                 ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
                 : new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
 
             _targetGeoConv =
-                //targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.NoDatum ||
-                //targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.WGS84 ||
                 targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift
                 ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
                 : new GeocentricConverter(targetCRS.Datum.Ellipsoid);

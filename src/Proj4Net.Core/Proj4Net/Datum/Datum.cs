@@ -51,7 +51,7 @@ namespace Proj4Net.Core.Datum
         public enum DatumTransformType
         {
             Unknown = 0,
-            WGS84 = 1,
+            GeoCentric = 1,
             ThreeParameters = 2,
             SevenParameters = 3,
             GridShift = 4
@@ -198,13 +198,12 @@ namespace Proj4Net.Core.Datum
                 {
                     return _grids != null
                         ? DatumTransformType.GridShift
-                        //: DatumTransformType.NoDatum;   // jugstalt
-                        : DatumTransformType.WGS84;
+                        : DatumTransformType.GeoCentric;
                 }
 
                 if (IsIdentity(_transform))
                 {
-                    return DatumTransformType.WGS84;
+                    return DatumTransformType.GeoCentric;
                 }
 
                 if (_transform.Length == 3)
@@ -217,7 +216,7 @@ namespace Proj4Net.Core.Datum
                     return DatumTransformType.SevenParameters;
                 }
 
-                return DatumTransformType.WGS84;
+                return DatumTransformType.GeoCentric;
             }
         }
 
@@ -390,15 +389,11 @@ namespace Proj4Net.Core.Datum
         public void ApplyGridShift(Coordinate c, bool inverse)
         {
             foreach (var grid in _grids)
-            {
-                var gridOptional = grid.StartsWith("@");
-                //var gridName = grid.StartsWith("@") ? grid.Substring(1) : grid;
-                //var uri = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
-
-                var datumShiftTransformation = DatumShiftTransformationFactory.Load(grid);
-                if (datumShiftTransformation == null)
+            { 
+                var result = DatumShiftTransformationFactory.Load(grid);
+                if (result.transformation == null)
                 {
-                    if (!gridOptional)
+                    if (!result.isOptional)
                     {
                         throw new Proj4NetException();
                     }
@@ -408,7 +403,7 @@ namespace Proj4Net.Core.Datum
 
                 IDatumShiftTransformation useDatumShiftTransformation;
                 var c1 = new PhiLambda { Lambda = c.X, Phi = c.Y };
-                if (datumShiftTransformation.Applies(c1, out useDatumShiftTransformation))
+                if (result.transformation.Applies(c1, out useDatumShiftTransformation))
                 {
                     useDatumShiftTransformation.Apply(c, inverse);
                 }

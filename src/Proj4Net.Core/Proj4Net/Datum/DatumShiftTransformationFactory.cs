@@ -9,19 +9,20 @@ namespace Proj4Net.Core.Datum;
 internal class DatumShiftTransformationFactory
 {
     private static readonly object DatumShiftTransformationLoadLock = new object();
-    private static readonly Dictionary<string, IDatumShiftTransformation> _shiftTransformations = new();
+    private static readonly Dictionary<string, (IDatumShiftTransformation, bool)> _shiftTransformations = new();
 
-    internal static IDatumShiftTransformation Load(string grid)
+    internal static (IDatumShiftTransformation transformation, bool isOptional) Load(string grid)
     {
-        var gridOptional = grid.StartsWith("@");
+        var result = ((IDatumShiftTransformation)null, false);
 
-        IDatumShiftTransformation datumShiftTransformation = null;
-
-        if (!_shiftTransformations.TryGetValue(grid, out datumShiftTransformation))
+        if (!_shiftTransformations.TryGetValue(grid, out result))
         {
             lock (DatumShiftTransformationLoadLock)
             {
-                if (!_shiftTransformations.TryGetValue(grid, out datumShiftTransformation))
+                IDatumShiftTransformation datumShiftTransformation = null;
+                var gridOptional = grid.StartsWith("@");
+
+                if (!_shiftTransformations.TryGetValue(grid, out result))
                 {
                     var gridName = gridOptional ? grid.Substring(1) : grid;
 
@@ -32,9 +33,9 @@ internal class DatumShiftTransformationFactory
                         string ellipsoidName = gridName.Substring("ellps:".Length);
 
                         datumShiftTransformation = CoordinateTransformShift.Create(grid, $"+proj=longlat +ellps={ellipsoidName}");
-                        _shiftTransformations.Add(grid, datumShiftTransformation);
+                        _shiftTransformations.Add(grid, (datumShiftTransformation, gridOptional));
 
-                        return datumShiftTransformation;
+                        return (datumShiftTransformation, gridOptional);
                     }
 
                     #endregion
@@ -45,16 +46,16 @@ internal class DatumShiftTransformationFactory
                     if (!location.IsFile)
                     {
                         // TODO: Load from an url?? https://epsg.io??
-                        _shiftTransformations.Add(grid, datumShiftTransformation);
+                        _shiftTransformations.Add(grid, (datumShiftTransformation, gridOptional));
 
-                        return datumShiftTransformation;
+                        return (datumShiftTransformation, gridOptional);
                     }
                     
                     if(!File.Exists(location.LocalPath))
                     {
-                        _shiftTransformations.Add(grid, null);
+                        _shiftTransformations.Add(grid, (null, gridOptional));
 
-                        return null;
+                        return (null, gridOptional);
                     }
 
                     var ext = Path.GetExtension(location.LocalPath)?.ToLowerInvariant() ?? string.Empty;
@@ -63,9 +64,9 @@ internal class DatumShiftTransformationFactory
                     {
                         datumShiftTransformation = CoordinateTransformShift.Create(grid, File.ReadAllText(location.LocalPath).Trim());
 
-                        _shiftTransformations.Add(grid, datumShiftTransformation);
+                        _shiftTransformations.Add(grid, (datumShiftTransformation, gridOptional));
 
-                        return datumShiftTransformation;
+                        return (datumShiftTransformation, gridOptional);
                     }
 
                     #region Grid File
@@ -97,14 +98,14 @@ internal class DatumShiftTransformationFactory
 
                     Console.WriteLine($"Load atum shift transformation '{grid}' succeeded");
 
-                    _shiftTransformations.Add(grid, datumShiftTransformation);
-                    return datumShiftTransformation;
+                    _shiftTransformations.Add(grid, (datumShiftTransformation, gridOptional));
+                    return (datumShiftTransformation, gridOptional);
 
                     #endregion
                 }
             }
         }
 
-        return datumShiftTransformation;
+        return result;
     }
 }
