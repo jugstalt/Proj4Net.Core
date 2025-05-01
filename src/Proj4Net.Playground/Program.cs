@@ -75,6 +75,24 @@ trans.Transform(interations,
     }, 
     false);
 
+
+double[][] coordsArray = [
+    [ 15.0, 47.0 ],
+    [ 16.1, 42.1 ]
+    //...
+  ];
+
+trans.Transform(coordsArray.Length,
+(i, from) => {
+    from.X = coordsArray[i] [0];
+    from.Y = coordsArray[i][1];
+},
+(i, to) => {
+    coordsArray[i][0] = to.X;
+    coordsArray[i][1] = to.Y;
+}, 
+true); // run parallel
+
 //Parallel.For(0, interations, i =>
 //{
 //    trans.Transform(p, p2);
