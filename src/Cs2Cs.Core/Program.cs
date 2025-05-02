@@ -27,6 +27,10 @@ for (int i = 0; i < args.Length; i++)
         case "--coords":
             coords = args.Length > i ? args[++i] : "";
             break;
+        case "-v":
+        case "--version":
+            PrintVersion();
+            return;
     }
 }
 
@@ -34,9 +38,14 @@ if (String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to))
 {
     Console.WriteLine("Usage:");
     Console.WriteLine("cs2cs.core.exe --from <source-coordssys> --to <target-coordsys> [--coords <x,y>]");
+    Console.WriteLine();
     Console.WriteLine("Examples:");
     Console.WriteLine("cs2cs.core.exe --from EPSG:4326 --to EPSG:31256 --coords 15,47");
     Console.WriteLine("cs2cs.core.exe -f \"+proj=longlat +ellps=clrk66 +towgs84=-10,158,187,0,0,0,0 +no_defs \" -to ...");
+    Console.WriteLine("");
+    Console.WriteLine("cs2cs.core.exe --version");
+    Console.WriteLine("Shows Proj4Net.Core Version");   
+
     return;
 }
 
@@ -56,6 +65,8 @@ if (interactive)
     Console.WriteLine(">> 15 47");
     Console.WriteLine(">> 15.12 48.1");
     Console.WriteLine(">> 15.11,47.3");
+    Console.WriteLine(">> exit  => ends program");
+    Console.WriteLine(">> version  => show Proj4Net.Core Version");
     Console.WriteLine();
     Console.WriteLine();
 }
@@ -66,9 +77,15 @@ while (true)
     {
         Console.Write(">> ");
         coords = Console.ReadLine() ?? String.Empty;
-        if (coords == "exit")
+        if ("exit".Equals(coords, StringComparison.OrdinalIgnoreCase))
         {
             break;
+        }
+
+        if("version".Equals(coords, StringComparison.OrdinalIgnoreCase))
+        {
+            PrintVersion();
+            continue;
         }
     }
 
@@ -137,6 +154,11 @@ CoordinateReferenceSystem CreateCRS(String crsSpec)
     }
 
     throw new Exception("Invalid coordinate string");
+}
+
+void PrintVersion()
+{
+    Console.WriteLine($"Proj4Net.Core Version: {typeof(CoordinateReferenceSystem).Assembly.GetName().Version}");
 }
 
 #endregion
