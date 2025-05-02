@@ -1,40 +1,40 @@
 # Modifikationen zum Original Projekt
 
-Im original Projekt gab noch ein Problem Transformation nach WebMercator. Dabei ging es um 
-die Interpretation von ``+nadgrids=@null``. Zu Behebung des Problems wurden in meiner 
-Implementierung von Version 1.x einige Änderungen vorgenommen.
+Im original Projekt gab noch ein Problem mit der Transformation nach WebMercator. Dabei ging es um die Interpretation von ``+nadgrids=@null``. Zu Behebung des Problems 
+wurden in meiner Implementierung von Version 1.x einige Änderungen vorgenommen.
 
-Diese Änderungen können unter **Modifications** im letzten Branch von Version 1.x ``v1`` 
-nachgelesen werden.
+Diese Änderungen können unter **Modifications** im letzten Branch von Version 1.x``v1`` nachgelesen werden.
 
-Nach einer erneuten Überarbeitung der Transformations Logik konnte auf einige dieser Änderungen 
-verzichtet werden. Zum Beispiels ist der ``DatumTransformType`` ``NoDatum`` nicht mehr notwendig.
+Nach einer erneuten Überarbeitung der Transformations Logik konnte auf einige dieser 
+Änderungen verzichtet werden. Zum Beispiels ist der ``DatumTransformType`` ``NoDatum`` 
+nicht mehr notwendig.
 
 In dieser Beschreibung sollte gezeigt werden, wie die Projektslogik funktioniert und 
-warum es zu Abweichungen der Ergebnisse zu alten ``proj4`` Libraries im Sub-Millimeter Bereich kommen 
-kann.
+warum es zu Abweichungen der Ergebnisse zu alten ``proj4`` Libraries im Sub-Millimeter 
+Bereich kommen kann.
 
-> **_NOTE:_** Mit der Beschreibung und Änderungen zum original Projekt möchte ich die Arbeit der ursprünglichen Entwickler nicht kritisiern. Auch wenn einige Fehler passiert sind wurde hervorragende Arbeit geleistet. Auch ich nehme nicht an, dass die von mir vorgenommen Änderungen frei von Fehler sind.
+> **_NOTE:_** Mit der Beschreibung und Änderungen zum original Projekt möchte ich die Arbeit der ursprünglichen Entwickler nicht kritisiern. Auch wenn einige Fehler passiert sind wurde hervorragende Arbeit geleistet. Auch ich nehme nicht an, dass die von mir vorgenommen Änderungen frei von Fehlern und Kritik sind.
 
 ## Begriffserklärung und Theorie
 
-In Punkt auf der Erdoberfläche kann durch Koordinaten beschreiben werden. Es gibt unterschiedliche 
-Koordinatensysteme in denen dies geschehen kann.
-Bei einer Transformation werden Koordinaten von einem Koordinaten System in ein anderes 
-Koordinaten System transformiert.
+Ein Punkt auf der Erdoberfläche kann durch Koordinaten beschreiben werden. Es gibt 
+unterschiedliche Koordinatensysteme in denen dies geschehen kann.
+Bei einer Transformation werden Koordinaten von einem Koordinaten System in ein 
+anderes Koordinaten System transformiert.
 
-* **Ebene Koordinaten System**: Für lokale Bereiche wird die Erde in eine Ebene projeziert (zB durch 
+* **Ebene Koordinaten System**: Für lokale Bereiche wird die Erde in eine Ebene 
+  projeziert (zB durch 
   Zylinder, Kegel oder gnomonische Projektion). Diese Koordinatensystem besitzen verschiedene Eigenschaften wie Konformität (Winkeltreue) oder Flächentreue. Die ebenen Koordinaten werden meistens 
   mit ``x``, ``y`` beschrieben.
-  Ebene Koordinaten System können auch einen globale Ausdehnen haben, beispielsweise die WebMercator 
+  Ebene Koordinaten System können auch eine globale Ausdehnen haben, beispielsweise die WebMercator 
   Projektion. Diese Projektionen weißen allerdings immer ab einem bestimmte Punkt großer Verzerrung auf,
   warum für geodätische Anwendungen meist die lokalen Ebenen Systeme verwendet werden.
 
 * **Spherisch/Ellipsoidische Koordinaten:** Dabei handelt es sich auf Koordinaten die sich auf die
   Kugel bzw. auf das Ellipsoid beziehen und beziehen sich in der Regel auf den Abstand zum Äquator und 
-  zu einem Null Meridian. Die Koordinaten werden in der Regel mit geographischer Breite (φ) und 
-  geographischer Länge (λ) angegeben.
-  Diese Koordinatensystem decken theoretisch die gesamte Erde ab. Allerdings sind Berechnungen auf 
+  zu einem Null Meridian. Die Koordinaten werden in der Regel mit geographischer Breite (``φ``) und 
+  geographischer Länge (``λ``) angegeben.
+  Diese Koordinatensysteme decken theoretisch die gesamte Erde ab. Allerdings sind Berechnungen auf 
   einem Ellipsoid ungleich komplexer als Berechnungen in der Ebene. Darum werden diese Koordinaten Systeme für geodätische Zwecke nicht verwendet sondern diese Koordinaten werden durch eine Projektion 
   in ein Ebenes Koordinatensystem überführt.
 
@@ -69,7 +69,7 @@ regionale Gegebenheiten besser zu modellieren.
 - **7-Parameter-Transformation:** Diese Methode verwendet drei Translationsparameter, drei 
   Rotationsparameter und einen Skalierungsfaktor, um die Beziehung zwischen zwei Datums zu beschreiben. 
   Sie ist besonders nützlich für großräumige Transformationen. Die Parameter beziehen sich auf räumliche 3D Koordinaten ``X``, ``Y``, ``Z``. Die geographischen Koordinaten (``φ``, ``λ``) müssen also 
-  zusätzlich für den Datumsübergang räumliche 3D Koordinaten konvertiert werden.
+  zusätzlich für den Datumsübergang in räumliche 3D Koordinaten konvertiert werden.
 
   ```mermaid
     graph TD
@@ -80,7 +80,7 @@ regionale Gegebenheiten besser zu modellieren.
         C <-- 7 Parameters inv. --> D 
   ```
 
-  Auch wenn beide Ellipsoide geozentrisch sind (oder die idente Parameter haben) muss ein 
+  Auch wenn beide Ellipsoide geozentrisch sind (oder sie idente Parameter haben) muss ein 
   Datumsübergang gemacht werden, sofern nicht auch die Ellipsoide die gleichen Parameter haben
   (große Halbachse und Exzentrizität). Dabei entfällt allerdings die 7 Parameter Transformation:
 
@@ -93,8 +93,6 @@ regionale Gegebenheiten besser zu modellieren.
         B <----> C 
   ```
 
-
-    
 - **Grid-Shift-Transformation:** Diese Methode verwendet Gitterdateien, die lokale Unterschiede zwischen
   zwei Datums beschreiben. Sie ist besonders präzise für regionale Transformationen, da sie lokale 
   Verzerrungen berücksichtigt.
@@ -110,37 +108,37 @@ Regionen mit komplexen geodätischen Gegebenheiten.
 
 ## Transformations Logik
 
-Aus gehend von der oben beschrieben Theorie sind nun für eine Transformation folgende 
+Ausgehend von der oben beschrieben Theorie sind nun für eine Transformation folgende 
 Voraussetzungen notwendig:
 
 - beide Koordinatensysteme müssen eine Projektion aufweisen oder angeben, dass es sich bei den
-  Koordinaten um geographische Koordinaten auf einem Ellipsoid handelt,
+  Koordinaten um geographische Koordinaten auf einem Ellipsoid handelt.
   Beispiele:
   
   - ``+proj=tmerc`` Transversale Mercator Projektion (winkeltreue Zylinderprojektion)
   - ``+proj=longlat`` Koordinaten sind geographische Koordinaten (Longitude φ, Latitude λ) in Grad
 
-- optional zusätzliche Parameter, die die Projektion beschreiben wie ``+lat_0```,  ``+lon_0``, ``+k`` 
+- optional zusätzliche Parameter, die die Projektion beschreiben wie ``+lat_0``,  ``+lon_0``, ``+k`` 
   etc.
 
-- beide Koordinatensystem müssen sich auf ein Ellipsoid beziehen
+- beide Koordinatensystem müssen sich auf ein Ellipsoid beziehen  
   Beispiele:
 
   - ``+ellps=WGS84``, ``+ellps=bessel``, ... bekannte und definierte Ellipsoide
-  - ``+a=6378137 +b=6378137`` angebe der großen und kleinen Halbachse des Ellipsoides in Metern,
-    hier als Beispiel die Kugel für die WebMercator Projektion
+  - ``+a=6378137 +b=6378137`` Angabe der großen und kleinen Halbachse des Ellipsoids in Metern,  
+    hier als Beispiel die Kugel für die WebMercator-Projektion
 
-- Angabe des Datums (Datumsübergangs), also der Lagerung des Ellipsoids in Bezug auf das Geozentrum.
+- Angabe des Datums (Datumsübergangs), also der Lagerung des Ellipsoids in Bezug auf das Geozentrum.  
   Beispiele:
 
-  - ``+datum=WGS84`` Angabe eines definierten Datums 
-  - ``+towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232`` Angabe der 7 Parameter für die Helmert
-    Transformation
-  - ``+nadgrids=AT_GIS_GRID_2021_09_28.gsb`` Angabe eine Grid Files für den Grid Shift
-  - ``+nadgrids=@null`` Angabe eines optionalen Shifts (vorangestelltes ``@``), hier ein Null-Shift der 
-    die geographischen Koordinaten einfach eins zu eins von einem Ellipsoid auf ein anders überführt.
+  - ``+datum=WGS84`` Angabe eines definierten Datums  
+  - ``+towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232`` Angabe der 7 Parameter für die Helmert  
+    Transformation  
+  - ``+nadgrids=AT_GIS_GRID_2021_09_28.gsb`` Angabe einer Grid-Datei für den Grid-Shift  
+  - ``+nadgrids=@null`` Angabe eines optionalen Shifts (vorangestelltes ``@``), hier ein Null-Shift, der  
+    die geographischen Koordinaten einfach eins zu eins von einem Ellipsoid auf ein anderes überführt.
 
-> **_NOTE:_** ``+nadgrids=@null`` kommt beispielsweise bei der WebMercator Projektion zu Anwendung. Hier werden die Koordinaten aus dem WGS84 Ellipsoid einfach als Koordinaten auf der WebMercator Kugel übernommen. Den Datumsübergang (φ,λ) => (X,Y,Z) => (φ,λ) wird übersprungen. Für eigentlich Projektion wird dann aber die WebMercator Kugel verwendet: ``+proj=merc +a=6378137 +b=6378137 <other Parameters> +nadgrids=@null``
+> **_NOTE:_** ``+nadgrids=@null`` kommt beispielsweise bei der WebMercator-Projektion zur Anwendung. Hier werden die Koordinaten aus dem WGS84-Ellipsoid einfach als Koordinaten auf der WebMercator-Kugel übernommen. Der Datumsübergang (φ,λ) => (X,Y,Z) => (φ,λ) wird übersprungen. Für die eigentliche Projektion wird dann aber die WebMercator-Kugel verwendet: ``+proj=merc +a=6378137 +b=6378137 <other Parameters> +nadgrids=@null``
 
 Damit ergibt sich für eine Transformation folgender Ablauf:
 
@@ -204,3 +202,72 @@ Die oben darstellten Datumsübergänge können, je nach den Eigenschaften des Zi
     C -- S: 7 Parameter Helmert --> D
     D -- T: Gridshift inv --> F
 ```
+
+> **_NOTE:_** Wie oben schon erwähnt geht die Library immer davon aus, dass sich ein GridShift immer auf WGS84 bezieht, also nach oder von WGS84 transformiert wird. Damit löst sich das ursprüngliche Problem mit ``+nadgrids=@null`` beim WebMercator von selbst. Wie in der Abbildung oben ersichtlich, werden die WGS84 Koordinaten direkt als (``φ``,``λ``) Koordinaten auf der WebMercator Kugel übernommen. Dafür sind folgende Änderungen in der ``BasicCoordinateTransform`` Klasse verantwortlich:
+
+```csharp
+
+// jugstalt
+// gridshift always leads to WGS84, ETRS, ...?
+_sourceGeoConv =
+    sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift  
+    ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
+    : new GeocentricConverter(sourceCRS.Datum.Ellipsoid);
+
+_targetGeoConv =
+    targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift
+    ? new GeocentricConverter(Datum.Datum.WGS84.Ellipsoid)
+    : new GeocentricConverter(targetCRS.Datum.Ellipsoid);
+```
+
+## Genauigkeit und Kompatibilität
+
+Die Berechnung liefert Aufgrund der oben angeführten Transformations Logik zu teilweise anderen Ergebnissen (im Sub-Millimeter Bereich).
+
+Ein Beispiel ist die **NAD83 / BC Albers (EPSG:3005)** Transformation:
+
+``+proj=aea +lat_0=45 +lon_0=-126 +lat_1=50 +lat_2=58.5 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs``
+
+Ursprünglich wurde hier von ``GRS80`` nicht nach ``WGS84`` transformiert (über die räumlichen Koordinaten System).
+Der Grund war hier, dass die beiden System ``GRS80`` und ``WGS84`` als ident angesehen wurden. Inder ``Datum`` Klasse 
+wurde in der ``Equal()`` Methode folgender Code verwendet:
+
+```csharp
+// false if ellipsoids are not (approximately) equal
+if (_ellipsoid.EquatorRadius != _ellipsoid.EquatorRadius)
+{
+    if (Math.Abs(_ellipsoid.EccentricitySquared
+         - datum._ellipsoid.EccentricitySquared) > ELLIPSOID_E2_TOLERANCE)
+    {
+        return false;
+    }
+}
+```
+
+In der ersten ``if`` Anweisung werden zwei gleich Werte verglichen (unabsichtlicher Fehler). Die beiden Unterschiedlichen 
+Ellipsoide werden somit nie erkannt.
+
+Ich habe diesen Code folgendermaßen geändert:
+
+```csharp
+// jugstalt
+if (Math.Abs(_ellipsoid.EquatorRadius - datum.Ellipsoid.EquatorRadius) > ELLIPSOID_R_TOLERANCE ||
+    Math.Abs(_ellipsoid.EccentricitySquared - datum._ellipsoid.EccentricitySquared) > ELLIPSOID_E2_TOLERANCE)
+{
+    return false;
+}
+```
+
+Da zusätzlich die ``ELLIPSOID_E2_TOLERANCE`` verringert wurde, erkennt die Library jetzt einen Unterschied zwischen 
+``GRS80`` und ``WGS84``. Dadurch entstehen unterschiedliche Ergebnisse im Sub-Millimeter Bereich zum bestehenden ``proj4``
+Varianten.
+
+> **_NOTE:_** Um den Übergang von GRS80 zu WGS84 zu vermeiden müsste man nach der Projektions Logik ``+nadgrids=@null`` angeben.
+
+Trotz der Änderungen laufen alle bestehenden Test fehlerfrei durch. Allerdings musst dazu die Toleranz zu den angegeben Werten (kommen teilweise aus älteren ``proj4`` Implementierungen) verringert werden:
+
+```csharp
+internal const double TOLERENCE_XY = 0.0005;  // 0.0001
+```
+
+> **_NOTE:_** Die Abweichungen sind also immer noch geringer als 0.5mm (vormals 0.1mm). Die Tests würden auch für eine Genauigkeit von 0.2mm positiv durchlaufen, die der Übergang GRS80 auf WGS84 sehr gering ist. Grundsätzlich sollte man aber bedenken, die die Projektionen (``φ``,``λ`` => ``x``,``y``) teilweise auf Taylorreihen basieren, die ab einem bestimmten Glied abgebrochen werden. Die Relevanz des Sub-Millimeters für geodätische Anwendungen ist somit eher in Frage zu stellen ;) 

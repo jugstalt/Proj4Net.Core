@@ -31,7 +31,8 @@ Online implementation: https://epsg.io/transform
 
 I made some improvements, now all tests run successful 
 
-[Modification to the original project](./doc/modifications.md)
+[Modification to the original project (English)](./doc/modifications_en.md)
+[Modification to the original project (Germain)](./doc/modifications_de.md)
 
 ## Usage of the library
 
