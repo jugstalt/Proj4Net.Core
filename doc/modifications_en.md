@@ -221,3 +221,6 @@ internal const double TOLERENCE_XY = 0.0005;  // 0.0001
 ```
 
 > **_NOTE:_** The deviations are still less than 0.5mm (previously 0.1mm). The tests would also pass with an accuracy of 0.2mm, as the transition from GRS80 to WGS84 is very small. However, it should be noted that projections (``φ``,``λ`` => ``x``,``y``) are sometimes based on Taylor series, which are truncated after a certain term. The relevance of sub-millimeter accuracy for geodetic applications is therefore questionable ;)
+
+To understand which steps are performed during a transformation, 
+[Debugging](./debugging_en.md) can be used.

@@ -17,6 +17,7 @@ limitations under the License.
 using Proj4Net.Core.Abstraction;
 using Proj4Net.Core.Datum.Grids;
 using Proj4Net.Core.Utility;
+using RTools.Util;
 using System;
 using System.Collections.Generic;
 
@@ -180,8 +181,19 @@ namespace Proj4Net.Core.Datum
             get { return _ellipsoid; }
         }
 
-        public override string ToString()
+        public override string ToString() => ToString(false);
+        public string ToString(bool addParameters = false)
         {
+            if(addParameters && _transform != null)
+            {
+                return string.Format("[Datum-{0} {1}]", Name, string.Join(",", _transform));
+            }
+            else if (addParameters && _grids != null)
+            {
+
+                return string.Format("[Datum-{0} {1}]", Name, string.Join(",", _grids));
+            }
+
             return string.Format("[Datum-{0}]", Name);
         }
 
@@ -388,6 +400,9 @@ namespace Proj4Net.Core.Datum
         }
         public void ApplyGridShift(Coordinate c, bool inverse)
         {
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => ["--- Begin grid shifts ---"]);
+#endif
             foreach (var grid in _grids)
             { 
                 var result = DatumShiftTransformationFactory.Load(grid);
@@ -398,6 +413,9 @@ namespace Proj4Net.Core.Datum
                         throw new Proj4NetException();
                     }
 
+#if DEBUG
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"Ignored optional grid shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
+#endif
                     continue;
                 }
 
@@ -406,8 +424,15 @@ namespace Proj4Net.Core.Datum
                 if (result.transformation.Applies(c1, out useDatumShiftTransformation))
                 {
                     useDatumShiftTransformation.Apply(c, inverse);
+#if DEBUG
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"Applied {(inverse ? "inverse " : "")}grid Shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
+#endif
                 }
             }
+
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => ["--- End grid shifts -----"]);
+#endif
         }
     }
 }

@@ -1,24 +1,31 @@
 ﻿using Proj4Net.Core;
+using RTools.Util;
 
 string from = String.Empty, to = String.Empty, coords = String.Empty;
 CoordinateReferenceSystemFactory crsFactory = new CoordinateReferenceSystemFactory();
 CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
 
-for (int i = 0; i < args.Length - 1; i++)
+#if DEBUG
+Logger.Log.Verbosity = VerbosityLevel.Debug;
+#else
+Logger.Log.Verbosity = VerbosityLevel.Info;
+#endif
+
+for (int i = 0; i < args.Length; i++)
 {
-    switch(args[i])
+    switch (args[i])
     {
         case "-f":
         case "--from":
-            from = args[++i];
+            from = args.Length > i ? args[++i] : "";
             break;
         case "-t":
         case "--to":
-            to = args[++i];
+            to = args.Length > i ? args[++i] : "";
             break;
         case "-c":
         case "--coords":
-            coords = args[++i];
+            coords = args.Length > i ? args[++i] : "";
             break;
     }
 }
@@ -37,15 +44,20 @@ var sourceCRS = CreateCRS(from);  // "EPSG:4326", "+proj=longlat +datum=WGS84 +n
 var targetCRS = CreateCRS(to);
 
 var transform = ctFactory.CreateTransform(sourceCRS, targetCRS);
+var invTransform = ctFactory.CreateTransform(targetCRS, sourceCRS);
 var interactive = String.IsNullOrEmpty(coords);
 
-if(interactive)
+if (interactive)
 {
+    Console.WriteLine($"From: {sourceCRS.GetParameterString()}");
+    Console.WriteLine($"To: {targetCRS.GetParameterString()}");
     Console.WriteLine("input coordinates:");
     Console.WriteLine("examples:");
     Console.WriteLine(">> 15 47");
     Console.WriteLine(">> 15.12 48.1");
     Console.WriteLine(">> 15.11,47.3");
+    Console.WriteLine();
+    Console.WriteLine();
 }
 
 while (true)
@@ -62,18 +74,34 @@ while (true)
 
     try
     {
+        bool inverse = false;
+        coords = coords.Trim();
+        if (coords.StartsWith("!"))
+        {
+            coords = coords.Substring(1).Trim();
+            inverse = true;
+        }
+
         var coordinate = ParseCoodinateString(coords);
 
-        var sourceCoord = new ProjCoordinate(coordinate.x, coordinate.y);
-        var targetCoords = new ProjCoordinate();
+        var sourceCoord = new Coordinate(coordinate.x, coordinate.y);
+        var targetCoords = new Coordinate();
 
-        transform.Transform(sourceCoord, targetCoords);
+
+        targetCoords = inverse
+            ? invTransform.Transform(sourceCoord)
+            : transform.Transform(sourceCoord);
 
         Console.WriteLine(targetCoords);
     }
-    catch
+    catch (Exception ex)
     {
-        Console.WriteLine($"Sorry, can't perform transformation. Wrong input? { coords }");
+        Console.WriteLine($"Sorry, can't perform transformation.");
+        Console.WriteLine(ex.Message);
+#if DEBUG
+        Console.WriteLine("Stacktrace:");
+        Console.WriteLine(ex.StackTrace);
+#endif
     }
 
     if (!interactive)
@@ -102,10 +130,10 @@ CoordinateReferenceSystem CreateCRS(String crsSpec)
 (double x, double y) ParseCoodinateString(string coordString)
 {
     var coords = coordString.Trim().Replace(" ", ",").Replace(";", ",").Split(',');
-    if(coords.Length>=2)
+    if (coords.Length >= 2)
     {
-        return new(double.Parse(coords[0], System.Globalization.NumberStyles.Any),
-                   double.Parse(coords[1], System.Globalization.NumberStyles.Any));
+        return new(double.Parse(coords[0], System.Globalization.CultureInfo.InvariantCulture),
+                   double.Parse(coords[1], System.Globalization.CultureInfo.InvariantCulture));
     }
 
     throw new Exception("Invalid coordinate string");

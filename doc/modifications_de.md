@@ -271,3 +271,6 @@ internal const double TOLERENCE_XY = 0.0005;  // 0.0001
 ```
 
 > **_NOTE:_** Die Abweichungen sind also immer noch geringer als 0.5mm (vormals 0.1mm). Die Tests würden auch für eine Genauigkeit von 0.2mm positiv durchlaufen, die der Übergang GRS80 auf WGS84 sehr gering ist. Grundsätzlich sollte man aber bedenken, die die Projektionen (``φ``,``λ`` => ``x``,``y``) teilweise auf Taylorreihen basieren, die ab einem bestimmten Glied abgebrochen werden. Die Relevanz des Sub-Millimeters für geodätische Anwendungen ist somit eher in Frage zu stellen ;) 
+
+Um nachvollziehen zu können welche Schritte bei einer Transformation gemacht werden,
+kann das [Debugging](./debugging_de.md) verwendet werden.

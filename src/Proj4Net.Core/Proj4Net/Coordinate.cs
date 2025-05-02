@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core
 {
@@ -30,6 +31,24 @@ namespace Proj4Net.Core
                 Y = value.Y;
                 Z = value.Z;
             }
+        }
+
+
+        protected const double RTD = ProjectionMath.RadiansToDegrees;
+        protected const double DTR = ProjectionMath.DegreesToRadians;
+
+        public override string ToString() => ToString(false);
+        public string ToString(bool printZ, bool radiansToDegrees = false, int round = 12)
+        {
+            double x = Math.Round( X * (radiansToDegrees ? RTD : 1.0), round);
+            double y = Math.Round(Y * (radiansToDegrees ? RTD : 1.0), round);
+            double z = Math.Round(Z, round);
+
+            if (printZ)
+            {
+                return $"{x.ToString(System.Globalization.CultureInfo.InvariantCulture)},{y.ToString(System.Globalization.CultureInfo.InvariantCulture)},{z.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+            }
+            return $"{x.ToString(System.Globalization.CultureInfo.InvariantCulture)},{y.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
         }
     }
 }

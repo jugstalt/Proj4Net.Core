@@ -232,5 +232,12 @@ namespace Proj4Net.Core.Datum
         }
 
         //TODO: port non-iterative algorithm????
+
+        public override string ToString()
+        {
+            double f = (_a - _b) / _a;
+
+            return $"Ellipsoid: a={Math.Round(_a,3)}, b={Math.Round(_b, 3)}, 1/f={Math.Round(1/f,8)}";
+        }
     }
 }

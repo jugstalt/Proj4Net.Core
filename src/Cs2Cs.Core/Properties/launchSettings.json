@@ -2,7 +2,7 @@
   "profiles": {
     "Cs2Cs.Core": {
       "commandName": "Project",
-      "commandLineArgs": "--from EPSG:4326 --to EPSG:31256"
+      "commandLineArgs": "--from EPSG:31256 --to EPSG:3857 --debug"
     }
   }
 }

@@ -16,6 +16,7 @@ limitations under the License.
 using Proj4Net.Core.Datum;
 using Proj4Net.Core.Units;
 using Proj4Net.Core.Utility;
+using RTools.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -280,6 +281,14 @@ namespace Proj4Net.Core.Projection
                 dst.X = _totalScale * dst.X + _totalFalseEasting;
                 dst.Y = _totalScale * dst.Y + _totalFalseNorthing;
             }
+
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"Projection: {this.GetType().Name}",
+                $"  (lon,lat) => (x,y): ({dst.ToString(false)})"
+                ]);
+#endif
+
             return dst;
         }
 
@@ -347,8 +356,16 @@ namespace Proj4Net.Core.Projection
 
             if (_projectionLongitude != 0)
             {
+
                 dst.X = ProjectionMath.NormalizeLongitude(dst.X + _projectionLongitude);
             }
+
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"Projection: {this.GetType().Name}",
+                $"  (x,y) => (lon,lat): ({dst.ToString(false, radiansToDegrees: true)})"
+                ]);
+#endif
 
             return dst;
         }

@@ -41,8 +41,20 @@ namespace RTools.Util
 		///</summary>
 		public static Logger Log { get { return(log); } }
 
-		///<summary>The name is prepended to all messages. </summary>
-		protected string name;
+		public static void LogMessages(VerbosityLevel verbosity, Func<string[]> messagesFunc)
+		{
+			if(verbosity <= log.verbosity)
+			{
+				Console.WriteLine();
+				foreach (var message in messagesFunc())
+				{
+                    Console.WriteLine($"Debug: {message}");
+                }
+            }
+        }
+
+        ///<summary>The name is prepended to all messages. </summary>
+        protected string name;
 
 		/// <summary>
 		/// The verbosity of this logger.  Messages are filtered
@@ -112,7 +124,7 @@ namespace RTools.Util
 		{
 			if (verbosity >= VerbosityLevel.Debug)
 			{
-				//Console.WriteLine("Debug: " + name + ": " + String.Format(msg, args));
+				Console.WriteLine("Debug: " + name + ": " + String.Format(msg, args));
 			}
 		}
 
@@ -129,7 +141,7 @@ namespace RTools.Util
 		{
 			if (verbosity >= VerbosityLevel.Info)
 			{
-				//Console.WriteLine("Info: " + name + ": " + String.Format(msg, args));
+				Console.WriteLine("Info: " + name + ": " + String.Format(msg, args));
 			}
 		}
 
@@ -146,7 +158,7 @@ namespace RTools.Util
 		{
 			if (verbosity >= VerbosityLevel.Warn)
 			{
-				//Console.WriteLine("Warn: " + name + ": " + String.Format(msg, args));
+				Console.WriteLine("Warn: " + name + ": " + String.Format(msg, args));
 			}
 		}
 
@@ -163,7 +175,7 @@ namespace RTools.Util
 		{
 			if (verbosity >= VerbosityLevel.Error)
 			{
-				//Console.WriteLine("Error: " + name + ": " + String.Format(msg, args));
+				Console.WriteLine("Error: " + name + ": " + String.Format(msg, args));
 			}
 		}
 

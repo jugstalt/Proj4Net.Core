@@ -1,5 +1,6 @@
 ﻿using Proj4Net.Core.Datum;
 using Proj4Net.Core.Projection;
+using RTools.Util;
 using System;
 using System.Threading.Tasks;
 //using ICoordinateReferenceSystem = GeoAPI.CoordinateSystems.ICoordinateSystem;
@@ -56,7 +57,7 @@ namespace Proj4Net.Core
         ///<param name="sourceCRS">the source CRS to transform from</param>
         ///<param name="targetCRS">the target CRS to transform to</param>
         public BasicCoordinateTransform(CoordinateReferenceSystem sourceCRS,
-                                        CoordinateReferenceSystem targetCRS) 
+                                        CoordinateReferenceSystem targetCRS)
         {
             if (sourceCRS == null)
             {
@@ -146,9 +147,9 @@ namespace Proj4Net.Core
             return tgt;
         }
 
-        public Coordinate Transform_old(Coordinate src, Coordinate tgt) 
-        { 
-            
+        public Coordinate Transform_old(Coordinate src, Coordinate tgt)
+        {
+
             // NOTE: this method may be called many times, so needs to be as efficient as possible
             Coordinate geoCoord = new ProjCoordinate(0, 0);
 
@@ -196,6 +197,11 @@ namespace Proj4Net.Core
 
         public Coordinate Transform(Coordinate src)
         {
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"Start Transformation: {src}"
+                ]);
+#endif
             // NOTE: this method may be called many times, so needs to be as efficient as possible
             Coordinate geoCoord = new Coordinate();
 
@@ -203,6 +209,7 @@ namespace Proj4Net.Core
             {
                 // inverse project to geographic
                 _sourceCRS.Projection.InverseProjectRadians(src, geoCoord);
+
             }
             else
             {
@@ -218,7 +225,17 @@ namespace Proj4Net.Core
 
             if (_doDatumTransform)
             {
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                    $"#### Begin datums transformations ####"
+                    ]);
+#endif
                 DatumTransform(geoCoord);
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                    $"#### End datums transformations ######"
+                    ]);
+#endif
             }
 
             //Adjust target prime meridian if specified other than Greenwich
@@ -272,6 +289,12 @@ namespace Proj4Net.Core
             /* -------------------------------------------------------------------- */
             if (_sourceCRS.Datum.Equals(_targetCRS.Datum))
             {
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                    $"Source and target datums are identical",
+                    $"no datum transformation required",
+                    ]);
+#endif
                 return;
             }
 
@@ -281,6 +304,12 @@ namespace Proj4Net.Core
             if (_sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             {
                 _sourceCRS.Datum.ApplyGridShift(pt, false);
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                    $"Grid shift result",
+                    $"  (lon,lat) => (lon,lat) ({pt.ToString(false, radiansToDegrees: true)})"
+                    ]);
+#endif
             }
 
             /* ==================================================================== */
@@ -293,6 +322,14 @@ namespace Proj4Net.Core
                 /* -------------------------------------------------------------------- */
                 _sourceGeoConv.ConvertGeodeticToGeocentric(pt);
 
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                     $"Converted geodetic to geocentric",
+                     $"with {_sourceGeoConv.ToString()}",
+                     $"  (lon,lat) => [X,Y,Z] [{pt.ToString(true, round: 3)}]"
+                    ]);
+#endif
+
                 /* -------------------------------------------------------------------- */
                 /*      Convert between datums.                                         */
                 /* -------------------------------------------------------------------- */
@@ -300,10 +337,26 @@ namespace Proj4Net.Core
                 if (_sourceCRS.Datum.HasTransformToWGS84)
                 {
                     _sourceCRS.Datum.TransformFromGeocentricToWgs84(pt);
+
+#if DEBUG
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [
+                        $"Transformed to WGS84 (Helmert)",
+                        $"with Datum: {_sourceCRS.Datum.ToString(true)}",
+                        $"  [X,Y,Z] => [X,Y,Z]: {pt.ToString(true, round: 3)}"
+                        ]);
+#endif
                 }
                 if (_targetCRS.Datum.HasTransformToWGS84)
                 {
                     _targetCRS.Datum.TransformToGeocentricFromWgs84(pt);
+
+#if DEBUG
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [
+                        $"Transformed from WGS84 (Helmert)",
+                        $"with Datum: {_targetCRS.Datum.ToString(true)}",
+                        $"  [X,Y,Z] => [X,Y,Z]: [{pt.ToString(true, round: 3)}]"
+                        ]);
+#endif
                 }
 
                 /* -------------------------------------------------------------------- */
@@ -317,6 +370,13 @@ namespace Proj4Net.Core
                 //else
                 {
                     _targetGeoConv.ConvertGeocentricToGeodetic(pt);
+#if DEBUG
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [
+                        $"Converted geocentric to geodetic",
+                        $"with {_targetGeoConv.ToString()}",
+                        $"  [X,Y,Z] => (lon,lat): ({pt.ToString(false, radiansToDegrees: true)})"
+                        ]);
+#endif
                 }
             }
 
@@ -326,6 +386,12 @@ namespace Proj4Net.Core
             if (_targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             {
                 _targetCRS.Datum.ApplyGridShift(pt, true);
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [
+                    $"Inverse grid shift result",
+                    $"  (lon,lat) => (lon,lat) ({pt.ToString(false, radiansToDegrees: true)})"
+                    ]);
+#endif
             }
 
         }

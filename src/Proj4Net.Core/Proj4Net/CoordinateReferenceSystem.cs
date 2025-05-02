@@ -52,7 +52,7 @@ namespace Proj4Net.Core
 
         public String Name
         {
-            get {return _name;}
+            get { return _name; }
         }
 
         public String[] Parameters
@@ -96,10 +96,10 @@ namespace Proj4Net.Core
         {
             var datum = Datum;
             var geoProj = new LongLatProjection
-                              {
-                                    Ellipsoid = Projection.Ellipsoid, 
-                                    Unit = Units.Units.Degrees
-                              };
+            {
+                Ellipsoid = Projection.Ellipsoid,
+                Unit = Units.Units.Degrees
+            };
             geoProj.Initialize();
             return new CoordinateReferenceSystem("GEO-" + datum.Code, null, datum, geoProj);
         }
