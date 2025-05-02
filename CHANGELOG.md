@@ -11,7 +11,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## 1.25.1501
+## 2.25.1802
+
+### Added
+
+- Documentation: modification_de/en.md
+- Debug transformation with cs2cs.core tool (see docs/debugging_de/en.md)
+
+## 2.25.1501
 
 ### Added
 
