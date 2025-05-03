@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Proj4Net.Core.Datum;
 using Proj4Net.Core.Projection;
 using Proj4Net.Core.Units;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Proj4Net.Core.Parser
 {
@@ -12,7 +12,7 @@ namespace Proj4Net.Core.Parser
         /* SECONDS_TO_RAD = Pi/180/3600 */
         private const double SecondsToRad = 4.84813681109535993589914102357e-6;
         private const double Million = 1000000.0;
-        
+
         private Registry registry;
 
         public Proj4Parser(Registry registry)
@@ -130,7 +130,7 @@ namespace Proj4Net.Core.Parser
                     projection.ProjectionLatitude2Degrees = projection.ProjectionLatitude1Degrees;
                 }
 
-                if(!lat_0_hasValue && projection.Name=="lcc")
+                if (!lat_0_hasValue && projection.Name == "lcc")
                 {
                     projection.ProjectionLatitudeDegrees = projection.ProjectionLatitude1Degrees;
                 }
@@ -170,12 +170,12 @@ namespace Proj4Net.Core.Parser
             if (parameters.TryGetValue(Proj4Keyword.pm, out s))
             {
                 double pm;
-                projection.PrimeMeridian = double.TryParse(s, out pm) 
-                    ? Meridian.CreateByDegree(pm) 
+                projection.PrimeMeridian = double.TryParse(s, out pm)
+                    ? Meridian.CreateByDegree(pm)
                     : Meridian.CreateByName(s);
             }
 
-            
+
 
             //TODO: implement some of these parameters ?
 
@@ -232,12 +232,12 @@ namespace Proj4Net.Core.Parser
             }
 
             // optimization to detect 3-parameter transform
-            if (param[3] == 0.0 && param[4] == 0.0 && 
-                param[5] == 0.0 && param[6] == 0.0 )
+            if (param[3] == 0.0 && param[4] == 0.0 &&
+                param[5] == 0.0 && param[6] == 0.0)
             {
-                param = new [] { param[0], param[1], param[2] };
+                param = new[] { param[0], param[1], param[2] };
             }
-   
+
 
             /**
              * PROJ4 towgs84 7-parameter transform uses 
@@ -379,7 +379,7 @@ namespace Proj4Net.Core.Parser
                         // parameters of form +ppppp
                         String key = arg.Substring(1);
                         if (!parameters.ContainsKey(key))
-                        parameters.Add(key, null);
+                            parameters.Add(key, null);
                     }
                 }
             }

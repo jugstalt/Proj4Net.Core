@@ -40,7 +40,7 @@ namespace Proj4Net.Core
         public override string ToString() => ToString(false);
         public string ToString(bool printZ, bool radiansToDegrees = false, int round = 12)
         {
-            double x = Math.Round( X * (radiansToDegrees ? RTD : 1.0), round);
+            double x = Math.Round(X * (radiansToDegrees ? RTD : 1.0), round);
             double y = Math.Round(Y * (radiansToDegrees ? RTD : 1.0), round);
             double z = Math.Round(Z, round);
 

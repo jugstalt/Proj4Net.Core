@@ -1,6 +1,5 @@
-using System;
 using NUnit.Framework;
-using Proj4Net.Core.Tests.Projection;
+using System;
 
 namespace Proj4Net.Core.Tests.Projection
 {

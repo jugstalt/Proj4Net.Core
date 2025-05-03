@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-using System;
 using Proj4Net.Core.Datum;
 using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Projection
 {
@@ -37,9 +37,9 @@ namespace Proj4Net.Core.Projection
             Initialize();
         }
 
-       /**
-        * Set up a projection suitable for State Place Coordinates.
-        */
+        /**
+         * Set up a projection suitable for State Place Coordinates.
+         */
         public LambertConformalConicProjection(Ellipsoid ellipsoid, double lon_0, double lat_1, double lat_2, double lat_0, double x_0, double y_0)
         {
             Ellipsoid = ellipsoid;

@@ -17,9 +17,9 @@ limitations under the License.
 /*
  * This file was semi-automatically converted from the public-domain USGS PROJ source.
  */
-using System;
 using Proj4Net.Core.Datum;
 using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Projection
 {

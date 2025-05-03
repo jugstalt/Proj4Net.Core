@@ -36,7 +36,7 @@ namespace Proj4Net.Core.Datum.Grids
         /// <param name="table">The grid tabel to initialize</param>
         /// <returns>true if the header could be read.</returns>
         internal abstract bool ReadHeader(GridTable table);
-        
+
         /// <summary>
         /// Parses the grid table data
         /// </summary>

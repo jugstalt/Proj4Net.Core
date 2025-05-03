@@ -1,5 +1,5 @@
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Proj4Net.Core.Tests
 {

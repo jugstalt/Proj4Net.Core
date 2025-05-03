@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-using System;
 using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Projection
 {
@@ -41,7 +41,7 @@ namespace Proj4Net.Core.Projection
                 lpphi = -ProjectionMath.PiHalf;
             lampp = lpphi >= 0.0 ? ProjectionMath.PiHalf : PI_HALFPI;
             tanphi = Math.Tan(lpphi);
-            for (nn = 0; ; )
+            for (nn = 0; ;)
             {
                 sav = lampp;
                 lamtp = lplam + p22 * lampp;

@@ -4,7 +4,6 @@
  * @author Martin Davis
  *
  */
-using System;
 using NUnit.Framework;
 
 namespace Proj4Net.Core.Tests
@@ -57,25 +56,24 @@ namespace Proj4Net.Core.Tests
         public void TestNadGrids_atNULL()  // +nadgrids=@null
         {
             // 12.9664081925;48.1596984267
-            CheckTransform("EPSG:4326", 12.9664081925, 48.1596984267, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
-            CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:4326", 12.9664081925, 48.1596984267, 0.0000001);
-            CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
+            CheckTransform("EPSG:4326", 12.9664081925, 48.1596984267, "EPSG:3857", 1443413.95741, 6133464.204138, TOLERANCE_MM);
+            CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:4326", 12.9664081925, 48.1596984267, TOLERANCE_DEGREE_MM);
+            CheckTransform("EPSG:31255", -27239.046, 335772.696625, "EPSG:3857", 1443413.95741, 6133464.204138, TOLERANCE_MM);
 
-            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:4326", 12.9664081925, 48.1596984267, 0.0000001);
-            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:31255", -27239.046, 335772.696625, 0.01);
+            CheckTransformAndInverse("EPSG:3857", 1443413.95741, 6133464.204138, "EPSG:4326", 12.9664081925, 48.1596984267, TOLERANCE_DEGREE_MM, TOLERANCE_MM * 2);
+            CheckTransformAndInverse("EPSG:3857", 1443413.95741, 6133464.204138, "EPSG:31255", -27239.046, 335772.696625, TOLERANCE_MM, TOLERANCE_MM * 2);
 
-            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:31297", 372768.566062, 473449.757458, 0.01);
-            CheckTransform("EPSG:31297", 372768.566062, 473449.757458, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
+            CheckTransformAndInverse("EPSG:3857", 1443413.95741, 6133464.204138, "EPSG:31259", 499622.1972, 341190.4113, TOLERANCE_MM, TOLERANCE_MM * 2);
 
-            CheckTransform("EPSG:3857", 1443413.9514, 6133464.20918, "EPSG:4258", 12.9664081385, 48.1596984578, 0.0000001);
-            CheckTransform("EPSG:4258", 12.9664081385, 48.1596984578, "EPSG:3857", 1443413.9514, 6133464.20918, 0.01);
+            CheckTransform("EPSG:3857", 1443413.95741, 6133464.204138, "EPSG:4258", 12.9664081925, 48.1596984267, TOLERANCE_DEGREE_MM);
+            CheckTransform("EPSG:4258", 12.9664081925, 48.1596984267, "EPSG:3857", 1443413.95741, 6133464.204138, TOLERENCE_XY);
         }
 
         [Test]
         public void testEPSG_27700()
         {
             CheckTransform("EPSG:4326", -2.89, 55.4, "EPSG:27700", 343733.1404, 612144.530677, 0.1);
-            CheckTransform("EPSG:27700", 398089, 383867, "EPSG:4326", -2, 53, 1);
+            CheckTransform("EPSG:27700", 398089, 383867, "EPSG:4326", -2.0301708, 53.3517022, 1);
         }
 
         [Test, Description("Issue 7809")]
@@ -169,9 +167,9 @@ namespace Proj4Net.Core.Tests
         [Test]
         public void testSterea()
         {
-            CheckTransformToGeo("EPSG:28992", 148312.15, 457804.79, 5.29, 52.11, 0.001);
+            CheckTransformToGeo("EPSG:28992", 148312.15, 457804.79, 5.2895788, 52.1084377, 0.001);
         }
-  
+
         [Test]
         public void testAlbersEqualArea()
         {

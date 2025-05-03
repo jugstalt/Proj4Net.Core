@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Proj4Net.Core.Utility;
+using System;
 using System.Globalization;
 using System.Text;
-using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core
 {
@@ -91,7 +91,7 @@ namespace Proj4Net.Core
         /// is automatically set to Double.NaN. 
         /// </summary>
         public ProjCoordinate(double argX, double argY)
-            :base(argX, argY)
+            : base(argX, argY)
         {
         }
 
@@ -179,7 +179,7 @@ namespace Proj4Net.Core
                 throw new ArgumentNullException("p");
 
             var tmpP = (p is ProjCoordinate)
-                            ? p as ProjCoordinate
+                            ? p
                             : new ProjCoordinate(p.X, p.Y, p.Z);
 
             double dx, dy, dz = 0;
@@ -197,7 +197,7 @@ namespace Proj4Net.Core
             if (HasValidZOrdinate != tmpP.HasValidZOrdinate)
                 throw new Proj4NetException();
 
-            return Math.Sqrt(dx*dx + dy*dy + dz*dz);
+            return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
         public bool Equals2D(ProjCoordinate other)
@@ -271,7 +271,7 @@ namespace Proj4Net.Core
             builder.Append("]");
 
             return builder.ToString();
-            
+
             //return "ProjCoordinate" + ToShortString();
         }
 

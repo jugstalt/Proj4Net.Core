@@ -1,5 +1,5 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 
 namespace Proj4Net.Core.Tests
 {
@@ -11,12 +11,14 @@ namespace Proj4Net.Core.Tests
     {
         // ~= 1 / (2Pi * Earth radius) 
         // in code: 1.0 / (2.0 * Math.PI * 6378137.0);
-        public const double ApproximateMeterInDegrees = 2.0e-8; 
+        public const double ApproximateMeterInDegrees = 2.0e-8;
 
         //private static bool debug = true;
         private readonly string _name;
 
         internal const double TOLERENCE_XY = 0.0005;  // 0.0001
+        internal const double TOLERANCE_MM = 0.001;
+        internal const double TOLERANCE_DEGREE_MM = 1.0 / 111_000.0 * TOLERANCE_MM; // 1 degree is approx. 111 km
 
         private static readonly CoordinateTransformTester Tester = new CoordinateTransformTester(true);
 

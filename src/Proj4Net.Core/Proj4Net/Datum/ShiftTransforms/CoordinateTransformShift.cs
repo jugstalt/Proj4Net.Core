@@ -1,7 +1,6 @@
 ﻿using Proj4Net.Core.Abstraction;
 using Proj4Net.Core.Datum.Grids;
 using Proj4Net.Core.Utility;
-using System;
 
 namespace Proj4Net.Core.Datum.ShiftTransforms;
 internal class CoordinateTransformShift : IDatumShiftTransformation

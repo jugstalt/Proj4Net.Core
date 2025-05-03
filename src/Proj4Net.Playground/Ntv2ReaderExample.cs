@@ -76,7 +76,7 @@ public static class Ntv2Reader
 
                 // Dann Gitterpunkte einlesen
                 // "GS_COUNT" => Anzahl der Punkte
-                long gsCount = (long)sub.Header.GS_COUNT;
+                long gsCount = sub.Header.GS_COUNT;
 
                 // Prüfe, wie viele Werte pro Zeile => "NUM_SREC"
                 // Falls wir im globalen Header oder Sub-Grid-Header noch so was finden,
@@ -197,19 +197,19 @@ public static class Ntv2Reader
             case "N_LAT":
                 double d1 = BitConverter.ToDouble(valueBytes, 0);
                 sh.GetType().GetProperty(key, typeof(double))?
-                  .SetValue(sh, d1/3600);
+                  .SetValue(sh, d1 / 3600);
                 break;
             case "E_LONG":
             case "W_LONG":
                 double d2 = BitConverter.ToDouble(valueBytes, 0);
                 sh.GetType().GetProperty(key, typeof(double))?
-                  .SetValue(sh, -d2/3600);
+                  .SetValue(sh, -d2 / 3600);
                 break;
             case "LAT_INC":
             case "LONG_INC":
                 double d = BitConverter.ToDouble(valueBytes, 0);
                 sh.GetType().GetProperty(key, typeof(double))?
-                  .SetValue(sh, d/3600);
+                  .SetValue(sh, d / 3600);
                 break;
             case "GS_COUNT":
                 long l = BitConverter.ToInt64(valueBytes, 0);

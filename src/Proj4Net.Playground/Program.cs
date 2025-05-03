@@ -1,6 +1,6 @@
 ﻿using Proj4Net.Core;
 
-string from = "EPSG:4326", to = "EPSG:31256", coords = String.Empty;
+string to = "EPSG:31256", coords = String.Empty;
 CoordinateReferenceSystemFactory crsFactory = new CoordinateReferenceSystemFactory();
 CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
 
@@ -64,15 +64,17 @@ Parallel.For(0, 10_000_000, i =>
 
 var dtStart = DateTime.Now;
 
-trans.Transform(interations, 
-    (i, from) => {
+trans.Transform(interations,
+    (i, from) =>
+    {
         from.X = p.X;
         from.Y = p.Y;
     },
-    (i, to) => {
+    (i, to) =>
+    {
         p2.X = to.X;
         p2.Y = to.Y;
-    }, 
+    },
     false);
 
 
@@ -83,14 +85,16 @@ double[][] coordsArray = [
   ];
 
 trans.Transform(coordsArray.Length,
-(i, from) => {
-    from.X = coordsArray[i] [0];
+(i, from) =>
+{
+    from.X = coordsArray[i][0];
     from.Y = coordsArray[i][1];
 },
-(i, to) => {
+(i, to) =>
+{
     coordsArray[i][0] = to.X;
     coordsArray[i][1] = to.Y;
-}, 
+},
 true); // run parallel
 
 //Parallel.For(0, interations, i =>
@@ -125,7 +129,7 @@ foreach (var fileInfo in new DirectoryInfo(path).GetFiles("*.gsb"))
 
 
     //string filePath = @"G:\github\jugstalt\Proj4Net.Core\src\Proj4Net.Playground\bin\Debug\net6.0\share\proj\AT_GIS_GRID_2021_09_28.gsb";
-    string filePath = fileInfo.FullName;    
+    string filePath = fileInfo.FullName;
 
     var ntv2 = Ntv2Reader.ReadFile(filePath);
 

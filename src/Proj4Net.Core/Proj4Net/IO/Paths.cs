@@ -7,11 +7,11 @@ namespace Proj4Net.Core.IO
 {
     public class Paths
     {
-        static public string PROJ_LIB = 
+        static public string PROJ_LIB =
             Path.Combine(
-                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) 
-                ?? Directory.GetCurrentDirectory(), 
-                "share", 
+                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)
+                ?? Directory.GetCurrentDirectory(),
+                "share",
                 "proj"
                 );
     }

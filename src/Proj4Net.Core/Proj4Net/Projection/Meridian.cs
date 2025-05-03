@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Proj4Net.Core.Utility;
+using System;
 using System.Globalization;
-using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Projection
 {
@@ -64,14 +64,14 @@ namespace Proj4Net.Core.Projection
         /// <summary>
         /// Oslo, Norway
         /// </summary>
-        Oslo = 8913, 
+        Oslo = 8913,
 
         /// <summary>
         /// Unknown
         /// </summary>
         Unknown = int.MaxValue,
     }
-    
+
     /// <summary>
     /// A meridian structure
     /// </summary>
@@ -92,13 +92,13 @@ namespace Proj4Net.Core.Projection
         {
             get { return _longitude; }
         }
-		
-		/// <summary>
-		/// Gets the name.
-		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
+
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public NamedMeridian Name
         {
             get
@@ -107,37 +107,37 @@ namespace Proj4Net.Core.Projection
                 return _name;
             }
         }
-		
-		/// <summary>
-		/// Gets the code.
-		/// </summary>
-		/// <value>
-		/// The code.
-		/// </value>
+
+        /// <summary>
+        /// Gets the code.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
         public int Code
         {
-            get 
-            { 
+            get
+            {
                 TestName();
                 return (int)_name;
             }
         }
-		
-		/// <summary>
-		/// Gets the proj4 description.
-		/// </summary>
-		/// <value>
-		/// The proj4 description.
-		/// </value>
+
+        /// <summary>
+        /// Gets the proj4 description.
+        /// </summary>
+        /// <value>
+        /// The proj4 description.
+        /// </value>
         public string Proj4Description
         {
             get
             {
                 TestName();
-				string rhs = _name != NamedMeridian.Unknown
-                           				? _name.ToString().ToLower()
-                           				: ProjectionMath.ToDegrees(_longitude).ToString(NumberFormatInfo.InvariantInfo);
-                return  " +pm=" + rhs;
+                string rhs = _name != NamedMeridian.Unknown
+                                           ? _name.ToString().ToLower()
+                                           : ProjectionMath.ToDegrees(_longitude).ToString(NumberFormatInfo.InvariantInfo);
+                return " +pm=" + rhs;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Proj4Net.Core.Projection
         private static void QueryNameAndCode(double longitude, out NamedMeridian name)
         {
             //in degrees
-            var val = longitude/ProjectionMath.DegreesToRadians;
+            var val = longitude / ProjectionMath.DegreesToRadians;
             if (Math.Abs(val) < Epsilon)
             {
                 name = NamedMeridian.Greenwich;
@@ -240,7 +240,7 @@ namespace Proj4Net.Core.Projection
         /// <returns>The meridian</returns>
         public static Meridian CreateByName(string name)
         {
-            var namedMeridian = (NamedMeridian) Enum.Parse(typeof (NamedMeridian), name, true);
+            var namedMeridian = (NamedMeridian)Enum.Parse(typeof(NamedMeridian), name, true);
             return CreateByNamedMeridian(namedMeridian);
         }
 
@@ -297,22 +297,22 @@ namespace Proj4Net.Core.Projection
         {
             return Proj4Description.Trim();
         }
-		
-		public override int GetHashCode ()
-		{
-			return 6524 ^ _longitude.GetHashCode ();
-		}
-		
-		public override bool Equals (object obj)
-		{
-			if (!(obj is Meridian))
-				return false;
-			
-			var other = (Meridian)obj;
-			return this == other;
-		}
-		
-        public static bool operator==(Meridian lhs, Meridian rhs)
+
+        public override int GetHashCode()
+        {
+            return 6524 ^ _longitude.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Meridian))
+                return false;
+
+            var other = (Meridian)obj;
+            return this == other;
+        }
+
+        public static bool operator ==(Meridian lhs, Meridian rhs)
         {
             lhs.TestName();
             rhs.TestName();

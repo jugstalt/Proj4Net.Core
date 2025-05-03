@@ -31,25 +31,25 @@ namespace Proj4Net.Core.Tests
             return CheckTransform(WGS84, lon, lat, CreateCRS(name), x, y, tolerance);
         }
 
-  public bool CheckTransformToWGS84(String name, double x, double y, double lon, double lat, double tolerance)
-  {
-    return CheckTransform(CreateCRS(name), x, y, WGS84, lon, lat, tolerance);
-  }
-  
-  public bool CheckTransformFromGeo(String name, double lon, double lat, double x, double y, double tolerance)
-  {
-    CoordinateReferenceSystem  crs = CreateCRS(name);
-    CoordinateReferenceSystem geoCRS = crs.CreateGeographic();
-    return CheckTransform(geoCRS, lon, lat, crs, x, y, tolerance);
-  }
-  
-  public bool CheckTransformToGeo(String name, double x, double y, double lon, double lat, double tolerance)
-  {
-    CoordinateReferenceSystem  crs = CreateCRS(name);
-    CoordinateReferenceSystem geoCRS = crs.CreateGeographic();
-    return CheckTransform(crs, x, y, geoCRS, lon, lat, tolerance);
-  }
-  
+        public bool CheckTransformToWGS84(String name, double x, double y, double lon, double lat, double tolerance)
+        {
+            return CheckTransform(CreateCRS(name), x, y, WGS84, lon, lat, tolerance);
+        }
+
+        public bool CheckTransformFromGeo(String name, double lon, double lat, double x, double y, double tolerance)
+        {
+            CoordinateReferenceSystem crs = CreateCRS(name);
+            CoordinateReferenceSystem geoCRS = crs.CreateGeographic();
+            return CheckTransform(geoCRS, lon, lat, crs, x, y, tolerance);
+        }
+
+        public bool CheckTransformToGeo(String name, double x, double y, double lon, double lat, double tolerance)
+        {
+            CoordinateReferenceSystem crs = CreateCRS(name);
+            CoordinateReferenceSystem geoCRS = crs.CreateGeographic();
+            return CheckTransform(crs, x, y, geoCRS, lon, lat, tolerance);
+        }
+
         private static CoordinateReferenceSystem CreateCRS(String crsSpec)
         {
             CoordinateReferenceSystem cs;
@@ -86,6 +86,12 @@ namespace Proj4Net.Core.Tests
 
             var dx = Math.Abs(p2.X - x2);
             var dy = Math.Abs(p2.Y - y2);
+
+            //if(tgtCRS.Projection is LongLatProjection)
+            //{
+            //    tolerance *= 1.0 / 111000.0; // empiric 1 degree is appr. 111km
+            //}
+
             var delta = Math.Max(dx, dy);
 
             if (_verbose)

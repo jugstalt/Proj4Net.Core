@@ -3,16 +3,15 @@ using Proj4Net.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 namespace Proj4Net.Core.Datum.Grids;
 
 internal class GridTable : IDatumShiftTransformation
-{   
+{
     private const double HugeValue = double.MaxValue;
     private const int MaxIterations = 9;
     private const double Tolerance = 1E-12;
-    
+
     private bool _fullyLoaded;
     private readonly GridTableLoader _loader;
 
@@ -23,9 +22,9 @@ internal class GridTable : IDatumShiftTransformation
     internal PhiLambda LowerLeft;
     internal PhiLambda UpperRight;
     internal PhiLambda SizeOfGridCell;
-    
+
     internal int NumPhis { get; set; }
-    internal int NumLambdas{ get; set; }
+    internal int NumLambdas { get; set; }
 
     private readonly List<GridTable> _subGridTables = new List<GridTable>();
     private readonly object _lockReadData = new object();
@@ -50,7 +49,7 @@ internal class GridTable : IDatumShiftTransformation
                 return true;
         }
 
-        if (location.Lambda < LowerLeft.Lambda || 
+        if (location.Lambda < LowerLeft.Lambda ||
             location.Lambda > UpperRight.Lambda ||
             location.Phi < LowerLeft.Phi ||
             location.Phi > UpperRight.Phi) return false;
@@ -61,13 +60,13 @@ internal class GridTable : IDatumShiftTransformation
 
     public void Apply(Coordinate geoCoord, bool inverse)
     {
-        var input = new PhiLambda {Lambda = geoCoord.X, Phi = geoCoord.Y};
+        var input = new PhiLambda { Lambda = geoCoord.X, Phi = geoCoord.Y };
         if (input.Lambda == HugeValue)
             return;
 
         if (!_fullyLoaded)
         {
-            lock(_lockReadData)
+            lock (_lockReadData)
             {
                 if (!_fullyLoaded)
                     _loader.ReadData(this);
@@ -76,7 +75,7 @@ internal class GridTable : IDatumShiftTransformation
         }
 
         var output = Convert(input, inverse);
-        
+
         geoCoord.X = output.Lambda;
         geoCoord.Y = output.Phi;
     }
@@ -87,7 +86,7 @@ internal class GridTable : IDatumShiftTransformation
         tb.Lambda -= LowerLeft.Lambda;
         tb.Phi -= LowerLeft.Phi;
         tb.Lambda = ProjectionMath.NormalizeLongitude(tb.Lambda - Math.PI) + Math.PI;
-        
+
         var t = InterpolateGrid(tb);
         if (inverse)
         {
@@ -139,13 +138,13 @@ internal class GridTable : IDatumShiftTransformation
         }
         return input;
     }
-    
+
     private PhiLambda InterpolateGrid(PhiLambda t)
     {
         PhiLambda result, remainder;
         result.Phi = HugeValue;
         result.Lambda = HugeValue;
-        
+
         // find indices and normalize by the cell size (so fractions range from 0 to 1)
         var iLam = (int)Math.Floor(t.Lambda /= SizeOfGridCell.Lambda);
         var iPhi = (int)Math.Floor(t.Phi /= SizeOfGridCell.Phi);

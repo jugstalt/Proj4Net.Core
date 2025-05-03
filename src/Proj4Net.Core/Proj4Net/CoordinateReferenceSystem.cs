@@ -1,8 +1,8 @@
-using System;
-using System.Text;
 using Proj4Net.Core.Datum;
 using Proj4Net.Core.Projection;
 using Proj4Net.Core.Units;
+using System;
+using System.Text;
 
 namespace Proj4Net.Core
 {

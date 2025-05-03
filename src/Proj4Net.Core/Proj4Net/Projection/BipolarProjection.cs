@@ -1,5 +1,5 @@
-using System;
 using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Projection
 {

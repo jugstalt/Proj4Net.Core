@@ -184,7 +184,7 @@ namespace Proj4Net.Core.Datum
         public override string ToString() => ToString(false);
         public string ToString(bool addParameters = false)
         {
-            if(addParameters && _transform != null)
+            if (addParameters && _transform != null)
             {
                 return string.Format("[Datum-{0} {1}]", Name, string.Join(",", _transform));
             }
@@ -304,7 +304,7 @@ namespace Proj4Net.Core.Datum
                 return false;
             }
 
-            
+
 
             // false if transform parameters are not identical
             if (TransformType == DatumTransformType.ThreeParameters || TransformType == DatumTransformType.SevenParameters)
@@ -404,7 +404,7 @@ namespace Proj4Net.Core.Datum
             Logger.LogMessages(VerbosityLevel.Debug, () => ["--- Begin grid shifts ---"]);
 #endif
             foreach (var grid in _grids)
-            { 
+            {
                 var result = DatumShiftTransformationFactory.Load(grid);
                 if (result.transformation == null)
                 {

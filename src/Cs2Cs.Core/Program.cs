@@ -44,7 +44,7 @@ if (String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to))
     Console.WriteLine("cs2cs.core.exe -f \"+proj=longlat +ellps=clrk66 +towgs84=-10,158,187,0,0,0,0 +no_defs \" -to ...");
     Console.WriteLine("");
     Console.WriteLine("cs2cs.core.exe --version");
-    Console.WriteLine("Shows Proj4Net.Core Version");   
+    Console.WriteLine("Shows Proj4Net.Core Version");
 
     return;
 }
@@ -82,7 +82,7 @@ while (true)
             break;
         }
 
-        if("version".Equals(coords, StringComparison.OrdinalIgnoreCase))
+        if ("version".Equals(coords, StringComparison.OrdinalIgnoreCase))
         {
             PrintVersion();
             continue;

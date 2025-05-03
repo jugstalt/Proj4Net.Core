@@ -1,7 +1,7 @@
+using Proj4Net.Core.Utility;
 using System;
 using System.Globalization;
 using System.Text;
-using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Units
 {
@@ -11,11 +11,11 @@ namespace Proj4Net.Core.Units
     public class AngleFormatException : FormatException
     {
         public AngleFormatException(String qualifier)
-            :base(String.Format("'{0}' is present more than once in format string", qualifier))
+            : base(String.Format("'{0}' is present more than once in format string", qualifier))
         {
         }
     }
-    
+
     /// <summary>
     /// Class for formatting and parsing angles in D/M/S notation
     /// </summary>
@@ -61,11 +61,11 @@ namespace Proj4Net.Core.Units
 
         #region Fields
 
-        private static readonly NumberFormatInfo AngleNumberFormatInfo = 
+        private static readonly NumberFormatInfo AngleNumberFormatInfo =
             (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         private readonly String _pattern;
         private readonly Boolean _isDegrees;
-        
+
         #endregion
 
         #region Object construction and disposal
@@ -166,8 +166,8 @@ namespace Proj4Net.Core.Units
                 }
             }
 
-            double ddmmss = _isDegrees 
-                ? number 
+            double ddmmss = _isDegrees
+                ? number
                 : ProjectionMath.ToDegrees(number);
             int iddmmss = (int)Math.Round(ddmmss * 3600);
             if (iddmmss < 0)
@@ -175,7 +175,7 @@ namespace Proj4Net.Core.Units
             int fraction = iddmmss % 3600;
 
             StringBuilder result = new StringBuilder();
-            foreach(char c in format)
+            foreach (char c in format)
             {
                 int f;
                 switch (c)
@@ -225,7 +225,7 @@ namespace Proj4Net.Core.Units
 
         private static void CheckFormatString(String format)
         {
-            char[] singles = new char[] {'D','M','S','W', 'N'};
+            char[] singles = new char[] { 'D', 'M', 'S', 'W', 'N' };
             foreach (var c in singles)
             {
                 int firstOccurence = format.IndexOf(c);
@@ -242,9 +242,9 @@ namespace Proj4Net.Core.Units
             double result;
             Boolean negate = false;
             int length = text.Length;
-            if ( length > 0)
+            if (length > 0)
             {
-                char c = text[length-1];
+                char c = text[length - 1];
                 switch (c)
                 {
                     case 'W':

@@ -1,7 +1,7 @@
-using System;
-using System.Text.RegularExpressions;
 using Proj4Net.Core.IO;
 using Proj4Net.Core.Parser;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Proj4Net.Core
 {
@@ -110,7 +110,7 @@ namespace Proj4Net.Core
 
         private static String[] SplitParameters(String paramStr)
         {
-            var regex = new Regex("\\s+" 
+            var regex = new Regex("\\s+"
 #if !SILVERLIGHT
             , RegexOptions.Compiled);
 #else

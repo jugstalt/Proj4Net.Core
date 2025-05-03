@@ -1,16 +1,16 @@
+using RTools.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using RTools.Util;
 
 namespace Proj4Net.Core.IO
 {
     public class Proj4FileReader
     {
         private static readonly Assembly _asm = Assembly.GetExecutingAssembly();
-        
+
         private static MemoryStream GetResource(string name)
         {
             var mrs = "Proj4Net.Core.Resources." + name;
@@ -19,10 +19,10 @@ namespace Proj4Net.Core.IO
                 return new MemoryStream();
             using (var sr = new BinaryReader(s))
             {
-                return new MemoryStream(sr.ReadBytes((int) s.Length));
+                return new MemoryStream(sr.ReadBytes((int)s.Length));
             }
         }
-        
+
         public String[] ReadParametersFromFile(String file, String name)
         {
             // TODO: read comment preceding CS string as CS description

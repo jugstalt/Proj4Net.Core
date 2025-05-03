@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-using System;
 using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Projection
 {
@@ -46,7 +46,7 @@ namespace Proj4Net.Core.Projection
             {
                 double E = Math.Sin(lpphi), c = Math.Cos(lpphi);
 
-                double rh = _am1 + _m1 - ProjectionMath.mlfn(lpphi, E , c , _en);
+                double rh = _am1 + _m1 - ProjectionMath.mlfn(lpphi, E, c, _en);
                 E = c * lplam / (rh * Math.Sqrt(1.0 - _es * E * E));
                 coord.X = rh * Math.Sin(E);
                 coord.Y = _am1 - rh * Math.Cos(E);

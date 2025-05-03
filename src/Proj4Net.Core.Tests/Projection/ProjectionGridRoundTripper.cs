@@ -9,7 +9,7 @@ namespace Proj4Net.Core.Tests.Projection
         private const String WGS84_PARAM = "+title=long/lat:WGS84 +proj=longlat +datum=WGS84 +units=degrees";
         CoordinateReferenceSystem WGS84 = CsFactory.CreateFromParameters("WGS84", WGS84_PARAM);
 
-        
+
         private readonly CoordinateReferenceSystem _cs;
         private readonly ICoordinateTransform _transInverse;
         private readonly ICoordinateTransform _transForward;

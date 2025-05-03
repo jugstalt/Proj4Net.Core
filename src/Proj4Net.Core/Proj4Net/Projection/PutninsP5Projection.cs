@@ -19,40 +19,44 @@ namespace Proj4Net.Core.Projection
 {
 
 
-public class PutninsP5Projection : Projection {
-
-	protected double A;
-	protected double B;
-
-	private const double C = 1.01346;
-	private const double D = 1.2158542;
-
-	public PutninsP5Projection() {
-		A = 2;
-		B = 1;
-	}
-
-    public override Coordinate Project(double lplam, double lpphi, Coordinate xy)
+    public class PutninsP5Projection : Projection
     {
-		xy.X = C * lplam * (A - B * Math.Sqrt(1.0 + D * lpphi * lpphi));
-		xy.Y = C * lpphi;
-		return xy;
-	}
 
-    public override Coordinate ProjectInverse(double xyx, double xyy, Coordinate lp)
-    {
-		lp.Y = xyy / C;
-		lp.X = xyx / (C * (A - B * Math.Sqrt(1.0 + D * lp.Y * lp.Y)));
-		return lp;
-	}
+        protected double A;
+        protected double B;
 
-	public override Boolean HasInverse {
-        get { return true; }
-	}
+        private const double C = 1.01346;
+        private const double D = 1.2158542;
 
-	public override String ToString() {
-		return "Putnins P5";
-	}
+        public PutninsP5Projection()
+        {
+            A = 2;
+            B = 1;
+        }
 
-}
+        public override Coordinate Project(double lplam, double lpphi, Coordinate xy)
+        {
+            xy.X = C * lplam * (A - B * Math.Sqrt(1.0 + D * lpphi * lpphi));
+            xy.Y = C * lpphi;
+            return xy;
+        }
+
+        public override Coordinate ProjectInverse(double xyx, double xyy, Coordinate lp)
+        {
+            lp.Y = xyy / C;
+            lp.X = xyx / (C * (A - B * Math.Sqrt(1.0 + D * lp.Y * lp.Y)));
+            return lp;
+        }
+
+        public override Boolean HasInverse
+        {
+            get { return true; }
+        }
+
+        public override String ToString()
+        {
+            return "Putnins P5";
+        }
+
+    }
 }

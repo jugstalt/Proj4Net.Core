@@ -1,5 +1,5 @@
-using System;
 using Proj4Net.Core.Datum;
+using System;
 
 namespace Proj4Net.Core.Parser
 {

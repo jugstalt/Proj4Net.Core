@@ -4,7 +4,6 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Proj4Net.Core;
 using Serilog;
-using System.Configuration;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
@@ -26,7 +25,7 @@ class Build : NukeBuild
     readonly string Version = typeof(CoordinateReferenceSystem).Assembly.GetName().Version.ToString();
     [Parameter("Platform to build - win-x64/linux-x64")]
     readonly string Platform = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-        ? "linux-x64" 
+        ? "linux-x64"
         : "win-x64";
 
     Target Clean => _ => _
@@ -71,8 +70,8 @@ class Build : NukeBuild
                         .SetProperty("DeployOnBuild", "true")
                         //.SetOutputDirectory(RootDirectory / "publish" / "cs2cs" / platform / configuration)
                         .SetPublishProfile($"{platform}-{configuration.ToLower()}")
-                        //.SetRuntime(platform)
-                        //.EnableNoRestore()
+                    //.SetRuntime(platform)
+                    //.EnableNoRestore()
                     );
                 }
             }

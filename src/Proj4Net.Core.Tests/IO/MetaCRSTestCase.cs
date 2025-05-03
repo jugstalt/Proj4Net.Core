@@ -1,6 +1,6 @@
+using Proj4Net.Core.Utility;
 using System;
 using System.IO;
-using Proj4Net.Core.Utility;
 
 namespace Proj4Net.Core.Tests.IO
 {
@@ -120,7 +120,7 @@ namespace Proj4Net.Core.Tests.IO
 
         public Coordinate SourceCoordinate
         {
-            get {return new ProjCoordinate(_srcOrd1, _srcOrd2, _srcOrd3);}
+            get { return new ProjCoordinate(_srcOrd1, _srcOrd2, _srcOrd3); }
         }
 
         public Coordinate TargetCoordinate

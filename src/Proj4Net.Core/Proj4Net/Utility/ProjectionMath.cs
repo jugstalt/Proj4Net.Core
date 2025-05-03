@@ -24,7 +24,7 @@ namespace Proj4Net.Core.Utility
         public const double Pi = Math.PI;
         public const double PiHalf = Math.PI / 2.0;
         [Obsolete("Use PiHalf")] public const double PIHalf = PiHalf;
-        public const double PiFourth = Math.PI/4.0;
+        public const double PiFourth = Math.PI / 4.0;
         [Obsolete("Use PiFourth")] public const double PIFourth = PiFourth;
         [Obsolete("Use PiFourth")]
         public const double FORTPI = PiFourth;
@@ -35,7 +35,7 @@ namespace Proj4Net.Core.Utility
         //public readonly static Rectangle2D WorldBoundsRad = new Rectangle2D.Double(-Math.PI, -Math.PI/2, Math.PI*2, Math.PI);
         //public readonly static Rectangle2D WorldBounds = new Rectangle2D.Double(-180, -90, 360, 180);
 
-	    public const double EPS10 = 1.0e-10;
+        public const double EPS10 = 1.0e-10;
 
         /// <summary>
         /// Converts radians to degrees
@@ -52,7 +52,7 @@ namespace Proj4Net.Core.Utility
         public static double ToRadians(double degrees) { return degrees * DegreesToRadians; }
 
         static public double SecondsToDegrees(double seconds) => seconds / 3600.0;
-        
+
 
         ///<summary>Degree versions of trigonometric function: Math.Sin</summary>
         public static double Sind(double v)

@@ -42,7 +42,7 @@ internal class DatumShiftTransformationFactory
 
                     var location = new Uri(System.IO.Path.Combine(IO.Paths.PROJ_LIB, gridName));
 
-                    
+
                     if (!location.IsFile)
                     {
                         // TODO: Load from an url?? https://epsg.io??
@@ -50,8 +50,8 @@ internal class DatumShiftTransformationFactory
 
                         return (datumShiftTransformation, gridOptional);
                     }
-                    
-                    if(!File.Exists(location.LocalPath))
+
+                    if (!File.Exists(location.LocalPath))
                     {
                         _shiftTransformations.Add(grid, (null, gridOptional));
 

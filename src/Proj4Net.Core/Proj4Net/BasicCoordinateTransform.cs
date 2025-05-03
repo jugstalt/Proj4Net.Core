@@ -59,6 +59,11 @@ namespace Proj4Net.Core
         public BasicCoordinateTransform(CoordinateReferenceSystem sourceCRS,
                                         CoordinateReferenceSystem targetCRS)
         {
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"Creating BasicCoordinateTransform from {sourceCRS.Name} to {targetCRS.Name}"
+            ]);
+#endif
             if (sourceCRS == null)
             {
                 throw new ArgumentNullException("sourceCRS");
@@ -79,6 +84,14 @@ namespace Proj4Net.Core
             _doForwardProjection = (targetCRS != CoordinateReferenceSystem.CS_GEO);
             _doDatumTransform = _doInverseProjection && _doForwardProjection
               && !sourceCRS.Datum.Equals(targetCRS.Datum);
+
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"  InverseProjection required: {_doInverseProjection}",
+                $"  ForwardProjection required: {_doForwardProjection}",
+                $"  DatumTransform required: {_doDatumTransform}"
+            ]);
+#endif
 
             if (!_doDatumTransform)
             {
@@ -101,6 +114,14 @@ namespace Proj4Net.Core
             //if (sourceCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift ||
             //    targetCRS.Datum.TransformType == Datum.Datum.DatumTransformType.GridShift)
             //    _transformViaGeocentric = false;
+
+#if DEBUG
+            Logger.LogMessages(VerbosityLevel.Debug, () => [
+                $"  Transform via geocentric required: {_transformViaGeocentric}",
+                $"  Source Datum Type: {sourceCRS.Datum?.TransformType}",
+                $"  Target Datum Type: {targetCRS.Datum?.TransformType}"
+            ]);
+#endif
 
             if (!_transformViaGeocentric)
             {
@@ -325,7 +346,7 @@ namespace Proj4Net.Core
 #if DEBUG
                 Logger.LogMessages(VerbosityLevel.Debug, () => [
                      $"Converted geodetic to geocentric",
-                     $"with {_sourceGeoConv.ToString()}",
+                     $"with {_sourceGeoConv}",
                      $"  (lon,lat) => [X,Y,Z] [{pt.ToString(true, round: 3)}]"
                     ]);
 #endif
@@ -373,7 +394,7 @@ namespace Proj4Net.Core
 #if DEBUG
                     Logger.LogMessages(VerbosityLevel.Debug, () => [
                         $"Converted geocentric to geodetic",
-                        $"with {_targetGeoConv.ToString()}",
+                        $"with {_targetGeoConv}",
                         $"  [X,Y,Z] => (lon,lat): ({pt.ToString(false, radiansToDegrees: true)})"
                         ]);
 #endif

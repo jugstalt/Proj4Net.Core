@@ -1,6 +1,6 @@
 
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Proj4Net.Core.Tests
 {
@@ -18,7 +18,7 @@ namespace Proj4Net.Core.Tests
         static readonly CoordinateTransformTester tester = new CoordinateTransformTester(true);
 
         public FeatureTest()
-            :base("FeatureTest")
+            : base("FeatureTest")
         {
         }
 

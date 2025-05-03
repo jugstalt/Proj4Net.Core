@@ -1,5 +1,5 @@
-using System;
 using Proj4Net.Core.Utility;
+using System;
 
 /*
 Copyright 2006 Jerry Huxtable

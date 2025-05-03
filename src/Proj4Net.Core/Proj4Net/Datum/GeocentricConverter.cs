@@ -1,5 +1,5 @@
-﻿using System;
-using Proj4Net.Core.Utility;
+﻿using Proj4Net.Core.Utility;
+using System;
 
 namespace Proj4Net.Core.Datum
 {
@@ -48,9 +48,9 @@ namespace Proj4Net.Core.Datum
         readonly double _e2;
         double _ep2;
 
-        public GeocentricConverter(Ellipsoid ellipsoid):this(ellipsoid.A, ellipsoid.B)
+        public GeocentricConverter(Ellipsoid ellipsoid) : this(ellipsoid.A, ellipsoid.B)
         {
-            
+
         }
         public GeocentricConverter(double a, double b)
         {
@@ -149,7 +149,6 @@ namespace Proj4Net.Core.Datum
             double CPHI;     /* cos of searched geodetic latitude */
             double SPHI;     /* sin of searched geodetic latitude */
             double SDPHI;    /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
-            bool At_Pole;     /* indicates location is in polar region */
             int iter;        /* # of continous iteration, max. 30 is always enough (s.a.) */
 
             double X = p.X;
@@ -158,17 +157,12 @@ namespace Proj4Net.Core.Datum
             double longitude;
             double latitude;
             double height;
-
-            At_Pole = false;
             P = Math.Sqrt(X * X + Y * Y);
             RR = Math.Sqrt(X * X + Y * Y + Z * Z);
 
             /*      special cases for latitude and longitude */
             if (P / this._a < genau)
             {
-
-                /*  special case, if P=0. (X=0., Y=0.) */
-                At_Pole = true;
                 longitude = 0.0;
 
                 /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
@@ -237,7 +231,7 @@ namespace Proj4Net.Core.Datum
         {
             double f = (_a - _b) / _a;
 
-            return $"Ellipsoid: a={Math.Round(_a,3)}, b={Math.Round(_b, 3)}, 1/f={Math.Round(1/f,8)}";
+            return $"Ellipsoid: a={Math.Round(_a, 3)}, b={Math.Round(_b, 3)}, 1/f={Math.Round(1 / f, 8)}";
         }
     }
 }
