@@ -67,6 +67,7 @@ if (interactive)
     Console.WriteLine(">> 15.11,47.3");
     Console.WriteLine(">> exit  => ends program");
     Console.WriteLine(">> version  => show Proj4Net.Core Version");
+    Console.WriteLine(">> clear => clear console");
     Console.WriteLine();
     Console.WriteLine();
 }
@@ -87,6 +88,17 @@ while (true)
             PrintVersion();
             continue;
         }
+
+        if("clear".Equals(coords, StringComparison.OrdinalIgnoreCase))
+        {
+            Console.Clear();
+            continue;
+        }
+
+        if(String.IsNullOrWhiteSpace(coords)) 
+        {
+            continue;
+        }
     }
 
     try
@@ -101,15 +113,14 @@ while (true)
 
         var coordinate = ParseCoodinateString(coords);
 
-        var sourceCoord = new Coordinate(coordinate.x, coordinate.y);
+        var sourceCoord = new Coordinate(coordinate.x, coordinate.y, coordinate.z ?? 0D);
         var targetCoords = new Coordinate();
-
 
         targetCoords = inverse
             ? invTransform.Transform(sourceCoord)
             : transform.Transform(sourceCoord);
 
-        Console.WriteLine(targetCoords);
+        Console.WriteLine(targetCoords.ToString(printZ: coordinate.z.HasValue));
     }
     catch (Exception ex)
     {
@@ -144,13 +155,20 @@ CoordinateReferenceSystem CreateCRS(String crsSpec)
     return cs;
 }
 
-(double x, double y) ParseCoodinateString(string coordString)
+(double x, double y, double? z) ParseCoodinateString(string coordString)
 {
     var coords = coordString.Trim().Replace(" ", ",").Replace(";", ",").Split(',');
-    if (coords.Length >= 2)
+    if (coords.Length == 2)
     {
         return new(double.Parse(coords[0], System.Globalization.CultureInfo.InvariantCulture),
-                   double.Parse(coords[1], System.Globalization.CultureInfo.InvariantCulture));
+                   double.Parse(coords[1], System.Globalization.CultureInfo.InvariantCulture),
+                   null);
+    }
+    if(coords.Length == 3)
+    {
+        return new(double.Parse(coords[0], System.Globalization.CultureInfo.InvariantCulture),
+                   double.Parse(coords[1], System.Globalization.CultureInfo.InvariantCulture),
+                   double.Parse(coords[2], System.Globalization.CultureInfo.InvariantCulture));
     }
 
     throw new Exception("Invalid coordinate string");

@@ -360,6 +360,8 @@ namespace Proj4Net.Core.Projection
                 dst.X = ProjectionMath.NormalizeLongitude(dst.X + _projectionLongitude);
             }
 
+            // jugstalt
+            dst.Z = src.Z;
 #if DEBUG
             Logger.LogMessages(VerbosityLevel.Debug, () => [
                 $"Projection: {this.GetType().Name}",

@@ -46,7 +46,8 @@ namespace Proj4Net.Core.Datum
         readonly double _a2;
         readonly double _b2;
         readonly double _e2;
-        double _ep2;
+        readonly double _e4;
+        readonly double _ep2;
 
         public GeocentricConverter(Ellipsoid ellipsoid) : this(ellipsoid.A, ellipsoid.B)
         {
@@ -60,6 +61,9 @@ namespace Proj4Net.Core.Datum
             _b2 = b * b;
             _e2 = (_a2 - _b2) / _a2;
             _ep2 = (_a2 - _b2) / _b2;
+
+            // jugstalt
+            _e4 = _e2 * _e2;
         }
 
         /**
@@ -124,9 +128,22 @@ namespace Proj4Net.Core.Datum
             p.Z = Z;
         }
 
-        public void ConvertGeocentricToGeodetic(Coordinate p)
+        public void ConvertGeocentricToGeodetic(
+            Coordinate p,
+            GeocentricToGeodeticAlgorithm algorithm = GeocentricToGeodeticAlgorithm.Default)
         {
-            ConvertGeocentricToGeodeticIter(p);
+            switch (algorithm != GeocentricToGeodeticAlgorithm.Default
+                ? algorithm
+                : Algorithms.DefaultGeocentricToGeodeticAlgorithm)
+            {
+                case GeocentricToGeodeticAlgorithm.Iterative:
+                    ConvertGeocentricToGeodeticIter(p);
+                    break;
+                default:
+                    ConvertGeocentricToGeodeticVermeille(p);
+                    break;
+            }
+            ;
         }
 
         public void ConvertGeocentricToGeodeticIter(Coordinate p)
@@ -225,7 +242,73 @@ namespace Proj4Net.Core.Datum
             p.Z = height;
         }
 
-        //TODO: port non-iterative algorithm????
+        // jugstalt
+
+        private const double _TOL_E2 = 1e-24;      // switch to spherical solution
+        private const double _TOL_ORIGIN = 1e-12;  // detects coordinates very close to (0,0,0)
+
+        public void ConvertGeocentricToGeodeticVermeille(Coordinate p)
+        {
+            double X = p.X, Y = p.Y, Z = p.Z;
+
+            /* ---------- special case 1: point (almost) at origin ---------- */
+            if (Math.Abs(X) < _TOL_ORIGIN && Math.Abs(Y) < _TOL_ORIGIN && Math.Abs(Z) < _TOL_ORIGIN)
+            {
+                p.X = double.NaN;  // undefined
+                p.Y = double.NaN;  // undefined
+                p.Z = 0.0;
+
+                return;
+            }
+
+            /* ---------- longitude is trivial ---------- */
+            double lon = Math.Atan2(Y, X);
+
+            /* ---------- special case 2: effectively spherical Earth ---------- */
+            if (_e2 < _TOL_E2)
+            {
+                // radius from centre
+                double rho_ = Math.Sqrt(X * X + Y * Y);
+                double r_ = Math.Sqrt(rho_ * rho_ + Z * Z);
+
+                double lat_ = Math.Atan2(Z, rho_);
+                double h_ = r_ - _a;            // for sphere, a == b
+
+                p.X = lon;
+                p.Y = lat_;
+                p.Z = h_;
+
+                return;
+            }
+
+            /* ---------- Vermeille closed‑form solution ---------- */
+            // step numbers follow Vermeille 2002
+            double p2 = (X * X + Y * Y) / _a2;                  // eq. (3)
+            double q = (1.0 - _e2) * Z * Z / _a2;               // eq. (4)
+            double r = (p2 + q - _e4) / 6.0;                    // eq. (5)
+
+            double s = _e4 * p2 * q / (4.0 * r * r * r);        // eq. (6)
+            double t = Math.Cbrt(1.0 + s + Math.Sqrt(s * (2.0 + s))); // eq. (7)
+
+            double u = r * (1.0 + t + 1.0 / t);                 // eq. (8)
+            double v = Math.Sqrt(u * u + _e4 * q);              // eq. (9)
+            double w = _e2 * (u + v - q) / (2.0 * v);           // eq. (10)
+
+            // stable k‑formula from Karney / GeographicLib
+            double uv = u + v;
+            double k = uv / (Math.Sqrt(uv + w * w) + w);        // eq. (11‑modified)
+
+            double rho = Math.Sqrt(X * X + Y * Y);
+            double D = k * rho / (k + _e2);                     // distance in the equatorial plane
+
+            double sqrtDD_ZZ = Math.Sqrt(D * D + Z * Z);
+            double lat = 2.0 * Math.Atan2(Z, D + sqrtDD_ZZ);   // final latitude
+            double h = (k + _e2 - 1.0) / k * sqrtDD_ZZ;        // final height
+
+            p.X = lon;
+            p.Y = lat;
+            p.Z = h;
+        }
 
         public override string ToString()
         {

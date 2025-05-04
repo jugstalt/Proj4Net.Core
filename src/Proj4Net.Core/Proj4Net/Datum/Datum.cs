@@ -20,6 +20,7 @@ using Proj4Net.Core.Utility;
 using RTools.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proj4Net.Core.Datum
 {
@@ -76,6 +77,7 @@ namespace Proj4Net.Core.Datum
         private readonly Ellipsoid _ellipsoid;
         private readonly double[] _transform;
         private readonly string[] _grids;
+        private readonly string[] _gridsInverse;
 
         public Datum(String code,
                      String transformSpec,
@@ -90,6 +92,7 @@ namespace Proj4Net.Core.Datum
             //else
             {
                 _grids = transformSpec.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                _gridsInverse = _grids.Reverse().ToArray();
             }
         }
 
@@ -403,18 +406,21 @@ namespace Proj4Net.Core.Datum
 #if DEBUG
             Logger.LogMessages(VerbosityLevel.Debug, () => ["--- Begin grid shifts ---"]);
 #endif
-            foreach (var grid in _grids)
+            foreach (var grid in inverse ? _gridsInverse : _grids)
             {
+#if DEBUG
+                Logger.LogMessages(VerbosityLevel.Debug, () => [$"  Load shift: {grid}"]);
+#endif
                 var result = DatumShiftTransformationFactory.Load(grid);
                 if (result.transformation == null)
                 {
                     if (!result.isOptional)
                     {
-                        throw new Proj4NetException();
+                        throw new Proj4NetException($"Can't find gridshift {grid}");
                     }
 
 #if DEBUG
-                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"Ignored optional grid shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"  Ignored optional grid shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
 #endif
                     continue;
                 }
@@ -425,7 +431,7 @@ namespace Proj4Net.Core.Datum
                 {
                     useDatumShiftTransformation.Apply(c, inverse);
 #if DEBUG
-                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"Applied {(inverse ? "inverse " : "")}grid Shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
+                    Logger.LogMessages(VerbosityLevel.Debug, () => [$"  Applied {(inverse ? "inverse " : "")}grid Shift: {grid} => ({c.ToString(false, radiansToDegrees: true)})"]);
 #endif
                 }
             }

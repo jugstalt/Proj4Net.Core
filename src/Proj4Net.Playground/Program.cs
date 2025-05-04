@@ -26,14 +26,14 @@ ProjCoordinate p0 = new ProjCoordinate();
 //p.Y = 318802.50516882259;
 
 // 15 48 with grid & ellips
-//var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb,ellps:GRS80");
-//p.X = -99411.663305323091;
-//p.Y = 318802.50516882259;
+var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +nadgrids=AT_GIS_GRID_2021_09_28.gsb,ellps:GRS80");
+p.X = -99411.663305323091;
+p.Y = 318802.50516882259;
 
 // 15 48 with +towgs84
-var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
-p.X = -99411.687267207672;
-p.Y = 318802.40399568342;
+//var fromCrs = crsFactory.CreateFromParameters(to, "+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1.000000 +x_0=0 +y_0=-5000000 +ellps=bessel +units=m +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232");
+//p.X = -99411.687267207672;
+//p.Y = 318802.40399568342;
 
 
 // 15 48 without datum
@@ -48,6 +48,8 @@ Console.WriteLine($"Original coordinates   : {Math.Round(p.X, 15)}, {Math.Round(
  */
 ICoordinateTransform trans = ctFactory.CreateTransform(fromCrs, toCrs);
 
+
+//Algorithms.DefaultGeocentricToGeodeticAlgorithm = GeocentricToGeodeticAlgorithm.Vermeille;
 int interations = 1; // 10_000_000;
 
 var helper = new Coordinate();
@@ -75,32 +77,7 @@ trans.Transform(interations,
         p2.X = to.X;
         p2.Y = to.Y;
     },
-    false);
-
-
-double[][] coordsArray = [
-    [ 15.0, 47.0 ],
-    [ 16.1, 42.1 ]
-    //...
-  ];
-
-trans.Transform(coordsArray.Length,
-(i, from) =>
-{
-    from.X = coordsArray[i][0];
-    from.Y = coordsArray[i][1];
-},
-(i, to) =>
-{
-    coordsArray[i][0] = to.X;
-    coordsArray[i][1] = to.Y;
-},
-true); // run parallel
-
-//Parallel.For(0, interations, i =>
-//{
-//    trans.Transform(p, p2);
-//});
+    true);
 
 //for (int i = 0; i < interations; i++)
 //{
