@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
-  <img src="https://img.shields.io/badge/Version-1.25.1501-lightgrey">
+  <img src="https://img.shields.io/badge/Version-2.25.1802-lightgrey">
   <img src="https://img.shields.io/badge/Tests-Passed-brightgreen">
 </p><br>
 
