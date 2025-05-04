@@ -71,6 +71,27 @@ public class CoordinateTransformTest : BaseCoordinateTransformTest
     }
 
     [Test]
+    public void Test_Austrian_GK()
+    {
+        // GK => GK
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:31256", -250377.802820, 341190.41037, TOLERANCE_MM, TOLERANCE_MM);
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:31254", 195907.8888, 339063.62437, TOLERANCE_MM, TOLERANCE_MM);
+
+        // GK => BMN
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:31259", 499622.19718, 341190.41037, TOLERANCE_MM, TOLERANCE_MM);
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:31257", 345907.8888, 339063.62437, TOLERANCE_MM, TOLERANCE_MM);
+
+        // GK => Lambert
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:31287", 372768.57007, 473449.7532, TOLERANCE_MM, TOLERANCE_MM);
+
+        // GK => WGS84
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:4326", 12.966408192475, 48.15969842672, TOLERANCE_DEGREE_MM, TOLERANCE_MM);
+
+        // GK => WebMercator
+        CheckTransformAndInverse("EPSG:31255", -27239.046, 335772.696625, "EPSG:3857", 1443413.9574, 6133464.2041, TOLERANCE_MM, TOLERANCE_MM);
+    }
+
+    [Test]
     public void testEPSG_27700()
     {
         CheckTransformAndInverse("EPSG:4326", -2.89, 55.4, "EPSG:27700", 343733.1371, 612144.5304, TOLERANCE_MM, TOLERANCE_DEGREE_MM * 2);
