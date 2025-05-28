@@ -3,5 +3,5 @@
 static public class Algorithms
 {
     static public GeocentricToGeodeticAlgorithm DefaultGeocentricToGeodeticAlgorithm
-        = GeocentricToGeodeticAlgorithm.Iterative;
+        = GeocentricToGeodeticAlgorithm.Vermeille;
 }
