@@ -50,7 +50,7 @@ ICoordinateTransform trans = ctFactory.CreateTransform(fromCrs, toCrs);
 
 
 //Algorithms.DefaultGeocentricToGeodeticAlgorithm = GeocentricToGeodeticAlgorithm.Vermeille;
-int interations = 1; // 10_000_000;
+int interations = 10_000_000;
 
 var helper = new Coordinate();
 // Warmup
