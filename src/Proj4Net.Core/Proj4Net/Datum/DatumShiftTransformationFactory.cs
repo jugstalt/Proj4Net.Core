@@ -96,7 +96,7 @@ internal class DatumShiftTransformationFactory
 
                     datumShiftTransformation = new GridTable(loader);
 
-                    Console.WriteLine($"Load atum shift transformation '{grid}' succeeded");
+                    Console.WriteLine($"Load Datum shift transformation '{grid}' succeeded");
 
                     _shiftTransformations.Add(grid, (datumShiftTransformation, gridOptional));
                     return (datumShiftTransformation, gridOptional);
