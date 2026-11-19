@@ -67,14 +67,28 @@ namespace Proj4Net.Core.Units
                                                     Chains, UsChains, Links, Fathoms
                                                };
 
-        public static Unit FindUnit(String name)
+        /// <summary>
+        /// Finds a predefined unit by name, plural or abbreviation. Returns false for unknown units.
+        /// </summary>
+        public static bool TryFindUnit(String name, out Unit unit)
         {
             for (int i = 0; i < PredifinedUnits.Length; i++)
             {
-                if (name.Equals(PredifinedUnits[i].Name) || name.Equals(PredifinedUnits[i].Plural) || name.Equals(PredifinedUnits[i].Abbreviation))
-                    return PredifinedUnits[i];
+                if (String.Equals(name, PredifinedUnits[i].Name, StringComparison.OrdinalIgnoreCase)
+                    || String.Equals(name, PredifinedUnits[i].Plural, StringComparison.OrdinalIgnoreCase)
+                    || String.Equals(name, PredifinedUnits[i].Abbreviation, StringComparison.OrdinalIgnoreCase))
+                {
+                    unit = PredifinedUnits[i];
+                    return true;
+                }
             }
-            return Metres;
+            unit = null;
+            return false;
+        }
+
+        public static Unit FindUnit(String name)
+        {
+            return TryFindUnit(name, out Unit unit) ? unit : Metres;
         }
 
         public static double Convert(double value, Unit from, Unit to)

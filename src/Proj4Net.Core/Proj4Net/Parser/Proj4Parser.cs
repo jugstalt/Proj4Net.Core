@@ -152,13 +152,13 @@ namespace Proj4Net.Core.Parser
 
             if (parameters.TryGetValue(Proj4Keyword.units, out s))
             {
-                Unit unit = Units.Units.FindUnit(s);
-                // TODO: report unknown units name as error
-                if (unit != null)
+                if (!Units.Units.TryFindUnit(s, out Unit unit))
                 {
-                    projection.FromMetres = (1.0 / unit.Value);
-                    projection.Unit = unit;
+                    throw new ArgumentException("Unknown unit: " + s);
                 }
+
+                projection.FromMetres = (1.0 / unit.Value);
+                projection.Unit = unit;
             }
 
             if (parameters.TryGetValue(Proj4Keyword.to_meter, out s))

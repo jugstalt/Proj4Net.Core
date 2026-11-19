@@ -11,6 +11,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## 2.26.4702
+
+### Added
+
+- ``Units.TryFindUnit(name, out unit)``: looks up a predefined unit and returns ``false`` for unknown names
+
+### Changed
+
+- an unknown ``+units`` value in a proj4 string now throws an ``ArgumentException`` (``Unknown unit: ...``).
+  Before, it silently fell back to metres, which led to wrong coordinates (breaking change for strings with invalid units)
+- unit names are matched case-insensitive (name, plural and abbreviation), e.g. ``+units=degrees``, ``+units=FT``
+
+### Fixed
+
+- the predefined units ``chain`` (``ch``), ``us-ch``, ``link`` and ``fath`` were defined, but not registered in ``Units.PredifinedUnits``,
+  so ``+units=link`` etc. fell back to metres
+
 ## 2.25.1802
 
 ### Added
