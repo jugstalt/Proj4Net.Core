@@ -63,7 +63,8 @@ namespace Proj4Net.Core.Units
                                                     Kilometres, Metres, Decimetres, Centimetres, Millimetres,
                                                     Miles, Yards, Feet, Inches,
                                                     UsMiles, UsYards, UsFeet, UsInches,
-                                                    NauticalMiles
+                                                    NauticalMiles,
+                                                    Chains, UsChains, Links, Fathoms
                                                };
 
         public static Unit FindUnit(String name)
